@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SB014.API.Entities;
+using SB014.API.Hubs;
 using SB014.API.Models;
 using SB014.API.Repository;
 
@@ -48,7 +49,9 @@ namespace SB014.API
             }
 
             app.UseHttpsRedirection();
+            app.UseSignalR(routes => routes.MapHub<TournamentHub>("/tournamenthub"));
             app.UseMvc();
+            
         }
     }
 }
