@@ -1,4 +1,4 @@
-namespace SB014.Api.Entities
+namespace SB014.API.Entities
 {
     public class GameStatus
     {

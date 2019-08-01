@@ -11,9 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using SB014.Api.Entities;
-using SB014.Api.Models;
-using SB014.Api.Repository;
+using SB014.API.Entities;
+using SB014.API.Models;
+using SB014.API.Repository;
 
 namespace SB014.API
 {

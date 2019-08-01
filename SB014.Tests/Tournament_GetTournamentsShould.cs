@@ -2,10 +2,10 @@ using Xunit;
 using SB014.API.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using SB014.Api.Models;
-using SB014.Api.Repository;
+using SB014.API.Models;
+using SB014.API.Repository;
 using Moq;
-using SB014.Api.Entities;
+using SB014.API.Entities;
 
 namespace SB014.UnitTests.Api
 {

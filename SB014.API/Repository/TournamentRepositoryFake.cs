@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SB014.Api.Entities;
+using SB014.API.Entities;
 
-namespace SB014.Api.Repository
+namespace SB014.API.Repository
 {
     
     public class TournamentRepositoryFake:ITournamentRepository

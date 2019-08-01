@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SB014.Api.Repository;
-using SB014.Api.Models;
+using SB014.API.Repository;
+using SB014.API.Models;
 using System;
-using SB014.Api.Entities;
+using SB014.API.Entities;
 
 namespace SB014.API.Controllers
 {

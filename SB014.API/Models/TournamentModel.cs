@@ -1,6 +1,6 @@
 using System;
 
-namespace SB014.Api.Models
+namespace SB014.API.Models
 {
     public class TournamentModel
     {

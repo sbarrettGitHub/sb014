@@ -1,6 +1,6 @@
 using AutoMapper;
-using SB014.Api.Entities;
-using SB014.Api.Models;
+using SB014.API.Entities;
+using SB014.API.Models;
 
 namespace SB014.API
 {
