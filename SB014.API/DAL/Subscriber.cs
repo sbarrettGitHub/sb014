@@ -1,7 +1,7 @@
 
 using System;
 
-namespace SB014.API.Entities
+namespace SB014.API.DAL
 {
     public class Subscriber
     {

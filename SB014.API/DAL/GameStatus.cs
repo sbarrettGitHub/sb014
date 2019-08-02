@@ -1,4 +1,4 @@
-namespace SB014.API.Entities
+namespace SB014.API.DAL
 {
     public class GameStatus
     {

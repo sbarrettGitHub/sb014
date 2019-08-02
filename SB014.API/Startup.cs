@@ -11,10 +11,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using SB014.API.Entities;
+using SB014.API.BAL;
+using SB014.API.DAL;
 using SB014.API.Hubs;
 using SB014.API.Models;
-using SB014.API.Repository;
 
 namespace SB014.API
 {
@@ -32,6 +32,7 @@ namespace SB014.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped<ITournamentRepository, TournamentRepositoryFake>();
+            services.AddScoped<IGameLogic, GameLogic>();
             services.AddAutoMapper(typeof(AutomapperProfile));
             services.AddSignalR();
         }

@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SB014.API.Entities;
 
-namespace SB014.API.Repository
+namespace SB014.API.DAL
 {
     
     public class TournamentRepositoryFake:ITournamentRepository
@@ -42,6 +41,13 @@ namespace SB014.API.Repository
         public Subscriber GetSubscriber(Guid tournamentId, Guid id)
         {
             return TournamentRepositoryFake.TournamentSubscribers.FirstOrDefault(ts=>ts.TournamentId == tournamentId && ts.Id == id);
+        }
+
+        public bool HasGame(Guid id)
+        {
+            var t = this.Get(id);
+
+            return t != null && t.GameId.HasValue;
         }
     }
 }

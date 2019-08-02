@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using SB014.API.Entities;
+using SB014.API.DAL;
 
-namespace SB014.API.Repository
+namespace SB014.API.DAL
 {
     public interface ITournamentRepository
     {
@@ -12,6 +12,7 @@ namespace SB014.API.Repository
 
         Subscriber AddSubscriber(Subscriber subscriber);
         Subscriber GetSubscriber(Guid tournamentId, Guid id);
+        bool HasGame(Guid guid);
     }
 
 }

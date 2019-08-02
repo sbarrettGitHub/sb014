@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SB014.API.Repository;
 using SB014.API.Models;
 using System;
-using SB014.API.Entities;
+using SB014.API.DAL;
+using SB014.API.BAL;
 
 namespace SB014.API.Controllers
 {
@@ -14,18 +14,19 @@ namespace SB014.API.Controllers
     {
         
         private readonly ITournamentRepository TournamentRepository;
-        private readonly IMapper _mapper;
-        public TournamentController(ITournamentRepository tournamentRepository, IMapper mapper)
+        private readonly IMapper Mapper;
+        private readonly IGameLogic GameLogic;
+        public TournamentController(ITournamentRepository tournamentRepository, IMapper mapper, IGameLogic gameLogic)
         {
             this.TournamentRepository = tournamentRepository;
-            _mapper = mapper;
-        }
-
+            Mapper = mapper;
+            GameLogic = gameLogic;
+        }         
 
         [HttpGet]
         public IActionResult GetTournaments()
         {            
-            return Ok(_mapper.Map<List<Tournament>,List<TournamentModel>>(this.TournamentRepository.GetAll()));
+            return Ok(Mapper.Map<List<Tournament>,List<TournamentModel>>(this.TournamentRepository.GetAll()));
         }
 
         [HttpGet]
@@ -43,12 +44,11 @@ namespace SB014.API.Controllers
             {
                 return NotFound();  
             }
-            return Ok(_mapper.Map<Subscriber,SubscriberModel>(subscriber));
+            return Ok(Mapper.Map<Subscriber,SubscriberModel>(subscriber));
         }
 
         [HttpPost]
         [Route("{id}/subscriber")]
-
         public IActionResult SubscribeToTournament(Guid id , [FromBody] SubscribeToTournamentModel subscribeToTournamentModel)
         {
             if(ModelState.IsValid == false)
@@ -61,14 +61,21 @@ namespace SB014.API.Controllers
                 return NotFound();
             }
 
-            Subscriber subscriber = _mapper.Map<SubscribeToTournamentModel,Subscriber>(subscribeToTournamentModel);
+            Subscriber subscriber = Mapper.Map<SubscribeToTournamentModel,Subscriber>(subscribeToTournamentModel);
             subscriber.TournamentId = id;            
             Subscriber newSubscriber = this.TournamentRepository.AddSubscriber(subscriber);
+
+            // If no game exists create one
+            bool doesGameExist = this.TournamentRepository.HasGame(id);
+            if(doesGameExist == false)
+            {
+                this.GameLogic.BuildGame(id);
+            }            
 
             return CreatedAtRoute("TournamentSubscriber", new {
                tournamentid = id,
                id = newSubscriber.Id 
-            },_mapper.Map<Tournament, TournamentModel>(tournament));
+            },Mapper.Map<Tournament, TournamentModel>(tournament));
         }
 
     }

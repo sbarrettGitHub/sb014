@@ -3,10 +3,10 @@ using SB014.API.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using SB014.API.Models;
-using SB014.API.Repository;
 using Moq;
-using SB014.API.Entities;
+using SB014.API.DAL;
 using System;
+using SB014.API.BAL;
 
 namespace SB014.UnitTests.Api
 {
@@ -20,7 +20,8 @@ namespace SB014.UnitTests.Api
             var mapper = Helper.SetupMapper();
             tournamentRepositoryFake.Setup(p=>p.Get(It.IsAny<Guid>())).Returns(new Tournament());
             tournamentRepositoryFake.Setup(p=>p.GetSubscriber(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Subscriber());
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper);
+            var gameLogicFake = new Mock<IGameLogic>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object);
 
             // Act 
             var  actionResult = tournamentController.GetTournamentSubscriber(new Guid(), new Guid());
@@ -36,7 +37,8 @@ namespace SB014.UnitTests.Api
             var mapper = Helper.SetupMapper();
             tournamentRepositoryFake.Setup(p=>p.Get(It.IsAny<Guid>())).Returns<Tournament>(null);
             tournamentRepositoryFake.Setup(p=>p.GetSubscriber(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Subscriber());
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper);
+            var gameLogicFake = new Mock<IGameLogic>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object);
 
             // Act 
             var  actionResult = tournamentController.GetTournamentSubscriber(new Guid(), new Guid());
@@ -52,7 +54,8 @@ namespace SB014.UnitTests.Api
             var mapper = Helper.SetupMapper();
             tournamentRepositoryFake.Setup(p=>p.Get(It.IsAny<Guid>())).Returns(new Tournament());
             tournamentRepositoryFake.Setup(p=>p.GetSubscriber(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns<Subscriber>(null);
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper);
+            var gameLogicFake = new Mock<IGameLogic>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object);
 
             // Act 
             var  actionResult = tournamentController.GetTournamentSubscriber(new Guid(), new Guid());
