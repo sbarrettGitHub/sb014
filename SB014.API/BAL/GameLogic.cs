@@ -1,12 +1,16 @@
 using System;
+using System.Collections.Generic;
+using SB014.API.Models;
 
 namespace SB014.API.BAL
 {
     public class GameLogic : IGameLogic
     {
-        public void BuildGame(Guid guid)
+        public GameModel BuildGame(Guid guid)
         {
-            throw new NotImplementedException();
+            return new GameModel{
+                Anagrams = new List<string>{"one", "two"}
+            };
         }
     }
 
