@@ -69,7 +69,7 @@ namespace SB014.API.Controllers
             bool doesGameExist = this.TournamentRepository.HasGame(id);
             if(doesGameExist == false)
             {
-                this.GameLogic.BuildGame(id);
+                this.GameLogic.BuildGame(id, tournament.CluesPerGame);
             }            
 
             return CreatedAtRoute("TournamentSubscriber", new {

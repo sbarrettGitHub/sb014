@@ -15,7 +15,8 @@ namespace SB014.API.DAL
             TournamentRepositoryFake.Tournaments.Add(
                     new Tournament 
                     {
-                        Id = Guid.NewGuid()
+                        Id = Guid.NewGuid(),
+                        CluesPerGame = 20
                     }
                 );
         }
