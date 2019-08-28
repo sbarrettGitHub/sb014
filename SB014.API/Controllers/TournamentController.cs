@@ -65,6 +65,7 @@ namespace SB014.API.Controllers
             Subscriber subscriber = Mapper.Map<SubscribeToTournamentModel,Subscriber>(subscribeToTournamentModel);
             subscriber.TournamentId = id;            
             Subscriber newSubscriber = this.TournamentRepository.AddSubscriber(subscriber);
+            SubscriberModel tournamentSubscriberModel = Mapper.Map<Subscriber, SubscriberModel>(newSubscriber);
 
             // If no game exists create one
             bool doesGameExist = this.TournamentRepository.HasGame(id);
@@ -72,11 +73,11 @@ namespace SB014.API.Controllers
             {
                 this.GameLogic.BuildGame(id, tournament.CluesPerGame);
             }            
-
+            
             return CreatedAtRoute("TournamentSubscriber", new {
                tournamentid = id,
                id = newSubscriber.Id 
-            },Mapper.Map<Tournament, TournamentModel>(tournament));
+            },tournamentSubscriberModel);
         }
         
         [HttpDelete]
