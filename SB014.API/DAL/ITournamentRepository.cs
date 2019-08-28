@@ -13,6 +13,7 @@ namespace SB014.API.DAL
         Subscriber AddSubscriber(Subscriber subscriber);
         Subscriber GetSubscriber(Guid tournamentId, Guid id);
         bool HasGame(Guid guid);
+        void RemoveSubscriber(Guid tournamentId, Guid id);
     }
 
 }

@@ -29,6 +29,7 @@ namespace SB014.API.Controllers
             return Ok(Mapper.Map<List<Tournament>,List<TournamentModel>>(this.TournamentRepository.GetAll()));
         }
 
+
         [HttpGet]
         [Route("{tournamentid}/subscriber/{id}", Name="TournamentSubscriber")]
         public IActionResult GetTournamentSubscriber(Guid tournamentid, Guid id)
@@ -77,6 +78,25 @@ namespace SB014.API.Controllers
                id = newSubscriber.Id 
             },Mapper.Map<Tournament, TournamentModel>(tournament));
         }
+        
+        [HttpDelete]
+        [Route("{id}/subscriber/{subscriberId}")]
+        public IActionResult UnsubscribeFromTournament(Guid id, Guid subscriberId)
+        {
+            Tournament tournament = this.TournamentRepository.Get(id);
+            if(tournament == null)
+            {
+                return NotFound();
+            }
+            Subscriber subscriber = this.TournamentRepository.GetSubscriber(id, subscriberId);
+            if(subscriber == null)
+            {
+                return NotFound();  
+            }
 
+            this.TournamentRepository.RemoveSubscriber(id, subscriberId);
+
+            return NoContent();
+        }
     }
 }

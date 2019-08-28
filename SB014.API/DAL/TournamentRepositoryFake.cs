@@ -50,5 +50,21 @@ namespace SB014.API.DAL
 
             return t != null && t.GameId.HasValue;
         }
+
+        public void RemoveSubscriber(Guid tournamentId, Guid id)
+        {
+            var tournament = TournamentRepositoryFake.Tournaments.FirstOrDefault(t=>t.Id==tournamentId);
+            if(tournament==null)
+            {
+                throw new Exception("Tournament not found!");
+            }
+            var subscriber = TournamentRepositoryFake.TournamentSubscribers.FirstOrDefault(ts=>ts.TournamentId == tournamentId && ts.Id == id);
+            if(subscriber == null)
+            {
+                throw new Exception("Tournament subscriber not found!");
+            }
+
+            TournamentRepositoryFake.TournamentSubscribers.Remove(subscriber);
+        }
     }
 }
