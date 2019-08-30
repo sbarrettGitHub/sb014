@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using SB014.API.DAL;
-using SB014.API.Models;
+using SB014.API.Domain;
 
 namespace SB014.API.BAL
 {
@@ -15,19 +14,25 @@ namespace SB014.API.BAL
             WordRepository = wordRepository;
         }
 
-        public GameModel BuildGame(Guid tournamentId, int cluesPerGame)
+        public Game BuildGame(Guid tournamentId, int cluesPerGame)
         {
             IEnumerable<string> unscrambledWords = this.WordRepository.GetWords(cluesPerGame);
-            List<string> anagrams = new List<string>();
+            List<Clue> anagrams = new List<Clue>();
             
             // Scramble words into anangrams
             foreach (string word in unscrambledWords)
             {
-                anagrams.Add(this.Scramble(word));
+                anagrams.Add(new Clue
+                { 
+                    ClueId = new Guid(),
+                    GameClue = this.Scramble(word),
+                    Answer = word
+                });
             }
             
-            return new GameModel{
-                Anagrams = anagrams
+            return new Game{
+                TournamentId = tournamentId,
+                Clues = anagrams
             };
         }
 

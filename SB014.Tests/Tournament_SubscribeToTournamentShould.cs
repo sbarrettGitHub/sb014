@@ -6,6 +6,7 @@ using SB014.API.DAL;
 using System;
 using SB014.API.Models;
 using SB014.API.BAL;
+using SB014.API.Domain;
 
 namespace SB014.UnitTests.Api
 {
@@ -79,7 +80,7 @@ namespace SB014.UnitTests.Api
             
         }
         [Fact]
-        public void CreateTournamentGame_WhenNoGameExists()
+        public void BuildNewTournamentGame_WhenNoGameExists()
         {
             // Arrange
             var tournamentRepositoryFake = new Mock<ITournamentRepository>();
@@ -95,6 +96,24 @@ namespace SB014.UnitTests.Api
             
             // Assert
             gameLogicMock.Verify(mock => mock.BuildGame(It.IsAny<Guid>(), It.IsAny<int>()), Times.Once());
+        }
+        [Fact]
+        public void SaveNewTournamentGame_WhenNoGameExists()
+        {
+            //Arrange
+            var tournamentRepositoryMock = new Mock<ITournamentRepository>();
+            tournamentRepositoryMock.Setup(p=>p.Get(It.IsAny<Guid>())).Returns(new Tournament());
+            tournamentRepositoryMock.Setup(p=>p.HasGame(It.IsAny<Guid>())).Returns(false);
+            tournamentRepositoryMock.Setup(p=>p.AddSubscriber(It.IsAny<Subscriber>())).Returns(new Subscriber {Id = new Guid()});
+            var mapper = Helper.SetupMapper();
+            var gameLogicFake = new Mock<IGameLogic>();
+            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogicFake.Object);
+
+            // Act 
+            var  actionResult = tournamentController.SubscribeToTournament(Guid.NewGuid(), new SubscribeToTournamentModel{Name="test"});
+            
+            // Assert
+            tournamentRepositoryMock.Verify(mock => mock.UpdateGame(It.IsAny<Game>()), Times.Once());
         }
     }
 } 

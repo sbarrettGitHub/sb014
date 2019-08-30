@@ -1,4 +1,4 @@
-namespace SB014.API.DAL
+namespace SB014.API.Domain
 {
     public class GameStatus
     {

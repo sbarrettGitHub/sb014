@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SB014.API.Domain;
 
 namespace SB014.API.DAL
 {
@@ -9,7 +10,7 @@ namespace SB014.API.DAL
     {
         public static List<Tournament> Tournaments {get;} = new List<Tournament>();
         public static List<Subscriber> TournamentSubscribers {get;} = new List<Subscriber>();
-
+        public static List<Game> TournamentGames {get;} = new List<Game>();
         public TournamentRepositoryFake()
         {
             TournamentRepositoryFake.Tournaments.Add(
@@ -48,7 +49,7 @@ namespace SB014.API.DAL
         {
             var t = this.Get(id);
 
-            return t != null && t.GameId.HasValue;
+            return t != null && t.PreplayGameId.HasValue;
         }
 
         public void RemoveSubscriber(Guid tournamentId, Guid id)
@@ -65,6 +66,14 @@ namespace SB014.API.DAL
             }
 
             TournamentRepositoryFake.TournamentSubscribers.Remove(subscriber);
+        }
+        public Game UpdateGame(Game game)
+        {
+            if(game.GameId == Guid.Empty)
+            {
+                game.GameId = new Guid();
+            }
+            return game;
         }
     }
 }

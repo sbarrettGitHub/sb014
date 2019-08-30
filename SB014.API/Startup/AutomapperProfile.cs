@@ -1,5 +1,5 @@
 using AutoMapper;
-using SB014.API.DAL;
+using SB014.API.Domain;
 using SB014.API.Models;
 
 namespace SB014.API

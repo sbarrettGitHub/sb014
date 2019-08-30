@@ -6,6 +6,8 @@ using SB014.API.DAL;
 using System;
 using SB014.API.Models;
 using SB014.API.BAL;
+using SB014.API.Domain;
+
 namespace SB014.UnitTests.Api
 {
     public class Tournament_UnsubscribeFormTournamentShould

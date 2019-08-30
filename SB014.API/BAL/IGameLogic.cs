@@ -1,10 +1,10 @@
 using System;
-using SB014.API.Models;
+using SB014.API.Domain;
 
 namespace SB014.API.BAL
 {
     public interface IGameLogic
     {
-        GameModel BuildGame(Guid id, int cluesPerGame);
+        Game BuildGame(Guid id, int cluesPerGame);
     }
 }

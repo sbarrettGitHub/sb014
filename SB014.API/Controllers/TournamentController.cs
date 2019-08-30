@@ -5,6 +5,7 @@ using SB014.API.Models;
 using System;
 using SB014.API.DAL;
 using SB014.API.BAL;
+using SB014.API.Domain;
 
 namespace SB014.API.Controllers
 {
@@ -71,7 +72,8 @@ namespace SB014.API.Controllers
             bool doesGameExist = this.TournamentRepository.HasGame(id);
             if(doesGameExist == false)
             {
-                this.GameLogic.BuildGame(id, tournament.CluesPerGame);
+                var newGame  = this.GameLogic.BuildGame(id, tournament.CluesPerGame);
+                var game = this.TournamentRepository.UpdateGame(newGame);
             }            
             
             return CreatedAtRoute("TournamentSubscriber", new {

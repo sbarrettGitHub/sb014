@@ -1,6 +1,6 @@
 using Moq;
 using SB014.API.BAL;
-using SB014.API.Models;
+using SB014.API.Domain;
 using Xunit;
 using System.Linq;
 using SB014.API.DAL;
@@ -19,10 +19,10 @@ namespace SB014.UnitTests.Api
             IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object);
 
             // Act
-            GameModel game = gameLogic.BuildGame(new System.Guid(), 2);
+            Game game = gameLogic.BuildGame(new System.Guid(), 2);
 
             // Assert
-            Assert.NotEmpty(game.Anagrams);
+            Assert.NotEmpty(game.Clues);
         }
         [Fact]
         public void ReturnAGameWithaCollectionOfDistinctAnagrams()
@@ -33,10 +33,10 @@ namespace SB014.UnitTests.Api
             IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object);
 
             // Act
-            GameModel game = gameLogic.BuildGame(new System.Guid(), 2);
+            Game game = gameLogic.BuildGame(new System.Guid(), 2);
 
             // Assert
-            Assert.True(game.Anagrams.Count == game.Anagrams.Distinct().Count());
+            Assert.True(game.Clues.Count == game.Clues.Distinct().Count());
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace SB014.UnitTests.Api
             IGameLogic gameLogic = new GameLogic(wordRepositoryMock.Object);
 
             // Act 
-            GameModel game = gameLogic.BuildGame(new System.Guid(), 2);
+            Game game = gameLogic.BuildGame(new System.Guid(), 2);
 
             // Assert
              wordRepositoryMock.Verify(mock => mock.GetWords(It.IsAny<int>()), Times.Once()); 
@@ -63,11 +63,11 @@ namespace SB014.UnitTests.Api
 
             // Act 
             // Build a game with a single anagram
-            GameModel game = gameLogic.BuildGame(new System.Guid(), 1);
+            Game game = gameLogic.BuildGame(new System.Guid(), 1);
 
             // Assert
             // Test that the anagram created contains all same the letters of the word returned from the repository but not in the same order
-            string anagram = game.Anagrams[0];
+            string anagram = game.Clues[0].GameClue;
             bool isScrambled = testWord.All(s=>anagram.Contains(s)) && anagram != testWord;
             Assert.True(isScrambled);
         }
