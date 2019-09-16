@@ -14,11 +14,13 @@ variables:
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+  displayName: 'Build solution'
 # do this after your tests have run
-- script: dotnet test ./SB014.Tests/SB014.Tests.csproj --logger trx
+- script: dotnet test ./SB014.Tests/SB014.Tests.csproj --logger trx 
+  displayName: 'Run unit tests'
 - task: PublishTestResults@2
   condition: succeededOrFailed()
   inputs:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
+
