@@ -58,7 +58,7 @@ namespace SB014.UnitTests.Api
             var  actionResult = tournamentController.SubscribeToTournament(Guid.NewGuid(), new SubscribeToTournamentModel{Name="test"});
 
             // Assert
-            tournamentRepositoryMock.Verify(mock => mock.AddSubscriber(It.IsAny<Subscriber>()), Times.Never());
+            tournamentRepositoryMock.Verify(mock => mock.AddSubscriber(It.IsAny<Subscriber>()), Times.Once());
             
         }
         [Fact]
