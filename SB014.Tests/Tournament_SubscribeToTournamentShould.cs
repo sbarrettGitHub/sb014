@@ -92,7 +92,7 @@ namespace SB014.UnitTests.Api
             var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicMock.Object);
 
             // Act 
-            var  actionResult = tournamentController.SubscribeToTournament(Guid.NewGuid(), new SubscribeToTournamentModel{Name="test"});
+            var  actionResult = tournamentController.SubscribeToTournament(Guid.NewGuid(), new SubscribeToTournamentModel{Name="tests"});
             
             // Assert
             gameLogicMock.Verify(mock => mock.BuildGame(It.IsAny<Guid>(), It.IsAny<int>()), Times.Once());
