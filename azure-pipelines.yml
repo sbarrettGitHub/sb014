@@ -13,7 +13,7 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
+- script: dotnet build --configuration $(buildConfiguration) --output "$(build.artifactstagingdirectory)\\" 
   displayName: 'Build solution'
 # do this after your tests have run
 - script: dotnet test ./SB014.Tests/SB014.Tests.csproj --logger trx 
