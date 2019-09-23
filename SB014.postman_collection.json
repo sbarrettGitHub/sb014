@@ -1,0 +1,104 @@
+{
+	"info": {
+		"_postman_id": "724462a1-d2a5-410f-bd77-ae12b681264a",
+		"name": "SB014",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetTournaments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{Host}}/api/tournament",
+					"protocol": "https",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"tournament"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SubscribeToTournament",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\tname: \"test subscriber 2\"\n}"
+				},
+				"url": {
+					"raw": "http://{{Host}}/api/tournament/57aacd3b-f770-467f-b45e-d13ab397efad/subscriber",
+					"protocol": "http",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"tournament",
+						"57aacd3b-f770-467f-b45e-d13ab397efad",
+						"subscriber"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UnsubscribeFromTournament",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://{{Host}}/api/tournament/57aacd3b-f770-467f-b45e-d13ab397efad/subscriber/cd85c978-fffe-4753-8b14-b4a2c3c67611",
+					"protocol": "https",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"tournament",
+						"57aacd3b-f770-467f-b45e-d13ab397efad",
+						"subscriber",
+						"cd85c978-fffe-4753-8b14-b4a2c3c67611"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTournamentSubscriber",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{Host}}/api/tournament/57aacd3b-f770-467f-b45e-d13ab397efad/subscriber/cd85c978-fffe-4753-8b14-b4a2c3c67611",
+					"protocol": "http",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"tournament",
+						"57aacd3b-f770-467f-b45e-d13ab397efad",
+						"subscriber",
+						"cd85c978-fffe-4753-8b14-b4a2c3c67611"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
