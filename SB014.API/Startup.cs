@@ -31,7 +31,7 @@ namespace SB014.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddScoped<ITournamentRepository, TournamentRepositoryFake>();
+            services.AddSingleton<ITournamentRepository, TournamentRepositoryFake>();
             services.AddScoped<IWordRepository, WordRepositoryFake>();
             services.AddScoped<IGameLogic, GameLogic>();
             services.AddAutoMapper(typeof(AutomapperProfile));
