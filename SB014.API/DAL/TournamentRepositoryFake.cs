@@ -13,13 +13,16 @@ namespace SB014.API.DAL
         public static List<Game> TournamentGames {get;} = new List<Game>();
         public TournamentRepositoryFake()
         {
-            TournamentRepositoryFake.Tournaments.Add(
+            if(TournamentRepositoryFake.TournamentGames != null && TournamentRepositoryFake.TournamentGames.Count == 0)
+            {
+             TournamentRepositoryFake.Tournaments.Add(
                     new Tournament 
                     {
                         Id = Guid.NewGuid(),
                         CluesPerGame = 20
                     }
-                );
+                );               
+            }
         }
 
         public List<Tournament> GetAll()
