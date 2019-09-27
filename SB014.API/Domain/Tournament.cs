@@ -8,9 +8,10 @@ namespace SB014.API.Domain
         public Guid? PreplayGameId { get; set; }
         public Guid? InplayGameId { get; set; }
         public Guid? PostplayGameId { get; set; }
-        public int? GameStatusId { get; set; }
 
         public int CluesPerGame { get; set; }
+
+        public int State {get; set;}
     }
 
 

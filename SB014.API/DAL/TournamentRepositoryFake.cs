@@ -35,7 +35,21 @@ namespace SB014.API.DAL
             return TournamentRepositoryFake.Tournaments.FirstOrDefault(t=>t.Id==id);
 
         }
+        public Tournament Update(Tournament tournament)
+        {
+            var tournamentUpdate = TournamentRepositoryFake.Tournaments.FirstOrDefault(t=>t.Id==t.Id);
+            if(tournamentUpdate==null)
+            {
+                throw new Exception("Tournament not found!");
+            }
+            tournamentUpdate.CluesPerGame = tournament.CluesPerGame;
+            tournamentUpdate.InplayGameId = tournament.InplayGameId;
+            tournamentUpdate.PostplayGameId = tournament.PostplayGameId;
+            tournamentUpdate.PreplayGameId = tournament.PreplayGameId;
+            tournamentUpdate.State = tournament.State;
 
+            return tournamentUpdate;
+        }
         public Subscriber AddSubscriber(Subscriber subscriber)
         {
             subscriber.Id = Guid.NewGuid();

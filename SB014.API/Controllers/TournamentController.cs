@@ -6,6 +6,8 @@ using System;
 using SB014.API.DAL;
 using SB014.API.BAL;
 using SB014.API.Domain;
+using Microsoft.AspNetCore.JsonPatch;
+using SB014.API.Domain.Enums;
 
 namespace SB014.API.Controllers
 {
@@ -29,7 +31,6 @@ namespace SB014.API.Controllers
         {            
             return Ok(Mapper.Map<List<Tournament>,List<TournamentModel>>(this.TournamentRepository.GetAll()));
         }
-
 
         [HttpGet]
         [Route("{tournamentid}/subscriber/{id}", Name="TournamentSubscriber")]
@@ -99,6 +100,26 @@ namespace SB014.API.Controllers
 
             this.TournamentRepository.RemoveSubscriber(id, subscriberId);
 
+            return NoContent();
+        }
+        [HttpPatch]
+        [Route("{id}")]
+        public IActionResult Update(Guid id, [FromBody]JsonPatchDocument<Tournament> jsonPatchDocument)
+        {
+            // Get the tournament
+            Tournament tournament = this.TournamentRepository.Get(id);
+            if(tournament == null)
+            {
+                return NotFound();
+            }
+            
+            // Update the tournament
+            jsonPatchDocument.ApplyTo(tournament);
+
+            // Save
+            this.TournamentRepository.Update(tournament);
+            
+            // Return success
             return NoContent();
         }
     }

@@ -98,6 +98,25 @@ namespace SB014.UnitTests.Api
             gameLogicMock.Verify(mock => mock.BuildGame(It.IsAny<Guid>(), It.IsAny<int>()), Times.Once());
         }
         [Fact]
+        public void BuildNewTournamentGameWithStatusPrePlay_WhenNoGameExists()
+        {
+            // Arrange
+            var tournamentRepositoryMock = new Mock<ITournamentRepository>();
+            tournamentRepositoryMock.Setup(p=>p.Get(It.IsAny<Guid>())).Returns(new Tournament());
+            tournamentRepositoryMock.Setup(p=>p.HasGame(It.IsAny<Guid>())).Returns(false);
+            tournamentRepositoryMock.Setup(p=>p.AddSubscriber(It.IsAny<Subscriber>())).Returns(new Subscriber {Id = new Guid()});
+            var wordReposFake = new Mock<IWordRepository>();
+            var mapper = Helper.SetupMapper();
+            var gameLogic = new GameLogic(wordReposFake.Object);
+            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogic);
+
+            // Act 
+            var  actionResult = tournamentController.SubscribeToTournament(Guid.NewGuid(), new SubscribeToTournamentModel{Name="tests"});
+            
+            // Assert
+            tournamentRepositoryMock.Verify(mock => mock.UpdateGame(It.Is<Game>(g=>g.GameStatusId == (int)API.Domain.Enums.GameStatus.PrePlay)), Times.Once());
+        }
+        [Fact]
         public void SaveNewTournamentGame_WhenNoGameExists()
         {
             //Arrange

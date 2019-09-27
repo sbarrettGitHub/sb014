@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SB014.API.DAL;
 using System;
-using SB014.API.Models;
 using SB014.API.BAL;
 using SB014.API.Domain;
 

@@ -24,7 +24,7 @@ namespace SB014.UnitTests.Api
             var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object);
 
             // Act 
-            var  actionResult = tournamentController.GetTournaments();
+            var actionResult = tournamentController.GetTournaments();
 
             // Assert
             Assert.IsType<OkObjectResult>(actionResult);
