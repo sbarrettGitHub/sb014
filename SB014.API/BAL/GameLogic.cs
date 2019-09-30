@@ -24,14 +24,14 @@ namespace SB014.API.BAL
             {
                 anagrams.Add(new Clue
                 { 
-                    ClueId = new Guid(),
+                    ClueId = Guid.NewGuid(),
                     GameClue = this.Scramble(word),
                     Answer = word
                 });
             }
             
             return new Game{
-                GameId = new Guid(),
+                GameId = Guid.NewGuid(),
                 TournamentId = tournamentId,
                 Clues = anagrams
             };

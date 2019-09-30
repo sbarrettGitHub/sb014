@@ -88,7 +88,7 @@ namespace SB014.API.DAL
         {
             if(game.GameId == Guid.Empty)
             {
-                game.GameId = new Guid();
+                game.GameId = Guid.NewGuid();
             }
             return game;
         }
