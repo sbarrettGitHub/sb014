@@ -31,6 +31,7 @@ namespace SB014.API.BAL
             }
             
             return new Game{
+                GameId = new Guid(),
                 TournamentId = tournamentId,
                 Clues = anagrams
             };
