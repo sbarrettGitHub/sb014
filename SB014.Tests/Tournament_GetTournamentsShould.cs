@@ -21,7 +21,8 @@ namespace SB014.UnitTests.Api
             var mapper = Helper.SetupMapper();
             tournamentRepositoryFake.Setup(p=>p.GetAll()).Returns(new List<Tournament>());
             var gameLogicFake = new Mock<IGameLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object);
+            var tournamnetLogicFake = new Mock<ITournamentLogic>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
 
             // Act 
             var actionResult = tournamentController.GetTournaments();
@@ -39,7 +40,8 @@ namespace SB014.UnitTests.Api
           
             tournamentRepositoryFake.Setup(p=>p.GetAll()).Returns(new List<Tournament>());
             var gameLogicFake = new Mock<IGameLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object);
+            var tournamnetLogicFake = new Mock<ITournamentLogic>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
 
             //Act
             var  actionResult = tournamentController.GetTournaments();
@@ -58,7 +60,8 @@ namespace SB014.UnitTests.Api
             var mapper = Helper.SetupMapper();
             tournamentRepositoryFake.Setup(p=>p.GetAll()).Returns(new List<Tournament>{new Tournament()});
             var gameLogicFake = new Mock<IGameLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object);
+            var tournamnetLogicFake = new Mock<ITournamentLogic>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
 
             //Act
             var  actionResult = tournamentController.GetTournaments();

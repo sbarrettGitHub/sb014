@@ -33,9 +33,10 @@ namespace SB014.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<ITournamentRepository, TournamentRepositoryFake>();
             services.AddScoped<IWordRepository, WordRepositoryFake>();
-            services.AddScoped<IGameLogic, GameLogic>();
+            services.AddScoped<ITournamentLogic, TournamentLogic>();
+            services.AddScoped<IGameLogic, GameLogic>();            
             services.AddAutoMapper(typeof(AutomapperProfile));
-            services.AddSignalR();
+            services.AddSignalR(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

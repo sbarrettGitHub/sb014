@@ -19,11 +19,13 @@ namespace SB014.API.Controllers
         private readonly ITournamentRepository TournamentRepository;
         private readonly IMapper Mapper;
         private readonly IGameLogic GameLogic;
-        public TournamentController(ITournamentRepository tournamentRepository, IMapper mapper, IGameLogic gameLogic)
+        private readonly ITournamentLogic TournamentLogic;
+        public TournamentController(ITournamentRepository tournamentRepository, IMapper mapper, IGameLogic gameLogic, ITournamentLogic tournamentLogic)
         {
             this.TournamentRepository = tournamentRepository;
-            Mapper = mapper;
-            GameLogic = gameLogic;
+            this.Mapper = mapper;
+            this.GameLogic = gameLogic;
+            this.TournamentLogic = tournamentLogic;
         }         
 
         [HttpGet]
@@ -113,11 +115,26 @@ namespace SB014.API.Controllers
                 return NotFound();
             }
             
-            // Update the tournament
-            jsonPatchDocument.ApplyTo(tournament);
+            // Get the current tournament status 
+            int initialState = tournament.State;
 
-            // Save
-            this.TournamentRepository.Update(tournament);
+            // Update the tournament
+            Tournament tournamentUpdate = new Tournament();
+            jsonPatchDocument.ApplyTo(tournamentUpdate);
+
+            // Only honour the update of a state
+            if(tournamentUpdate.State != initialState)
+            {
+                switch (tournamentUpdate.State)
+                {
+                    // Updating to preplay
+                    case (int)TournamentStatus.PrePlay:
+                        this.TournamentLogic.SetPreplay(tournament);
+                    break;
+                }
+                
+            }
+            
             
             // Return success
             return NoContent();

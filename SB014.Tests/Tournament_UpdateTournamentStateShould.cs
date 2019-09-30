@@ -21,7 +21,8 @@ namespace SB014.UnitTests.Api
             var mapper = Helper.SetupMapper();
             tournamentRepositoryFake.Setup(p=>p.Get(It.IsAny<Guid>())).Returns<Tournament>(null);
             var gameLogicFake = new Mock<IGameLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object);
+            var tournamnetLogicFake = new Mock<ITournamentLogic>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
 
             // Act 
             var actionResult = tournamentController.Update(Guid.NewGuid(), new JsonPatchDocument<Tournament>().Replace(t=>t.State,(int)TournamentStatus.PrePlay));
@@ -29,31 +30,22 @@ namespace SB014.UnitTests.Api
             // Assert
             Assert.IsType<NotFoundResult>(actionResult);
         }
+
          [Fact]
-         public void SetState_WhenStateChangeMade()
+         public void ApplyTournamentPreplayLogicRules_WhenStateChangeMadeFromNoplayToPreplay()
          {
             // Arrange
-            Guid tId = new Guid();
-            var tournamentRepositoryMock = new Mock<ITournamentRepository>();
-            tournamentRepositoryMock.Setup(p=>p.Get(It.IsAny<Guid>())).Returns(new Tournament{Id=tId});
+            var tournamentRepositoryFake = new Mock<ITournamentRepository>();
             var mapper = Helper.SetupMapper();
+            tournamentRepositoryFake.Setup(p=>p.Get(It.IsAny<Guid>())).Returns(new Tournament{State = (int)TournamentStatus.NoPlay});
             var gameLogicFake = new Mock<IGameLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogicFake.Object);
+            var tournamnetLogicMock = new Mock<ITournamentLogic>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicMock.Object);
             
             // Act
-            var actionResult = tournamentController.Update(tId, new JsonPatchDocument<Tournament>().Replace(t=>t.State,(int)TournamentStatus.PrePlay));
+            var actionResult = tournamentController.Update(new Guid(), new JsonPatchDocument<Tournament>().Replace(t=>t.State,(int)TournamentStatus.PrePlay));
 
-            // Assert
-            tournamentRepositoryMock.Verify(mock => mock.Update(It.Is<Tournament>(t=>t.State == (int)TournamentStatus.PrePlay)), Times.Once());
-         }
-         [Fact]
-         public void TestName()
-         {
-         //Given
-         
-         //When
-         
-         //Then
+            tournamnetLogicMock.Verify(mocks=>mocks.SetPreplay(It.IsAny<Tournament>()), Times.Once);
          }
     }
 }

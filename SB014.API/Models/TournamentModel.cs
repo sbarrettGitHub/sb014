@@ -8,5 +8,7 @@ namespace SB014.API.Models
         public Guid? PreplayGameId { get; set; }
         public Guid? InplayGameId { get; set; }
         public Guid? PostplayGameId { get; set; }
+
+        public int State { get; set; }
     }
 }
