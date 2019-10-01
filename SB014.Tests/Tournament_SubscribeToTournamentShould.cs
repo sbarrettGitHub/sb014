@@ -120,7 +120,7 @@ namespace SB014.UnitTests.Api
             var  actionResult = tournamentController.SubscribeToTournament(Guid.NewGuid(), new SubscribeToTournamentModel{Name="tests"});
             
             // Assert
-            tournamentRepositoryMock.Verify(mock => mock.UpdateGame(It.Is<Game>(g=>g.GameStatusId == (int)API.Domain.Enums.GameStatus.PrePlay)), Times.Once());
+            tournamentRepositoryMock.Verify(mock => mock.UpdateGame(It.IsAny<Game>()), Times.Once());
         }
         [Fact]
         public void SaveNewTournamentGame_WhenNoGameExists()

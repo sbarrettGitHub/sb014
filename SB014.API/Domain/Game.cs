@@ -7,14 +7,10 @@ namespace SB014.API.Domain
     {
         public Game()
         {
-            GameStatusId = (int)Enums.GameStatus.PrePlay;
             Clues = new List<Clue>();
         }
         public Guid GameId { get; set; }
         public Guid TournamentId { get; set; }
-
-        public int GameStatusId {get; set;}
-
         public List<Clue> Clues { get; set; }
     }
 }

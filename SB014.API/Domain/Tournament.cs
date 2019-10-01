@@ -1,4 +1,5 @@
 using System;
+using SB014.API.Domain.Enums;
 
 namespace SB014.API.Domain
 {
@@ -11,7 +12,24 @@ namespace SB014.API.Domain
 
         public int CluesPerGame { get; set; }
 
-        public int State {get; set;}
+        public TournamentState State {
+            get{
+                if(this.PreplayGameId.HasValue == false
+                    && this.InplayGameId.HasValue == false
+                    && this.PostplayGameId.HasValue == false)
+                {
+                    return TournamentState.NoPlay;
+                }
+                else if(this.PreplayGameId.HasValue && this.InplayGameId.HasValue)
+                {
+                    return TournamentState.InPlay;
+                }
+                else
+                {
+                    return TournamentState.PrePlay;
+                }
+            }
+        }
     }
 
 

@@ -46,7 +46,6 @@ namespace SB014.API.DAL
             tournamentUpdate.InplayGameId = tournament.InplayGameId;
             tournamentUpdate.PostplayGameId = tournament.PostplayGameId;
             tournamentUpdate.PreplayGameId = tournament.PreplayGameId;
-            tournamentUpdate.State = tournament.State;
 
             return tournamentUpdate;
         }

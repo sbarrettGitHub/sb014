@@ -13,7 +13,7 @@ namespace SB014.UnitTests.Api
     {
 
          [Fact]
-         public void BuildNewPreplayGame_WhenPreplayInplayAndPostPlayUnSet()
+         public void BuildNewPreplayGame_WhenAllGamesAreUnSet()
          {
             // Arrange
             var tournamentRepositoryFake = new Mock<ITournamentRepository>();
@@ -35,7 +35,7 @@ namespace SB014.UnitTests.Api
             gameLogicMock.Verify(mock => mock.BuildGame(It.IsAny<Guid>(), It.IsAny<int>()), Times.Once());         
         }
         [Fact]
-         public void SaveNewPreplayGame_WhenPreplayInplayAndPostPlayUnSet()
+         public void SaveNewPreplayGame_WhenAllAreUnSet()
          {
             // Arrange
             var tournamentRepositoryMock = new Mock<ITournamentRepository>();
@@ -54,10 +54,10 @@ namespace SB014.UnitTests.Api
             });
 
             // Assert
-            tournamentRepositoryMock.Verify(mock => mock.UpdateGame(It.Is<Game>(g=>g.GameStatusId == (int)API.Domain.Enums.GameStatus.PrePlay)), Times.Once());      
+            tournamentRepositoryMock.Verify(mock => mock.UpdateGame(It.IsAny<Game>()), Times.Once());      
         }
         [Fact]
-         public void UpdateTournamentPreplayGameId_WhenPreplayInplayAndPostPlayUnSetAndNewPreplayGameCreated()
+         public void UpdateTournamentPreplayGameId_WhenAllGamesAreUnSetAndNewPreplayGameCreated()
          {
             // Arrange
             var tournamentRepositoryMock = new Mock<ITournamentRepository>();
@@ -79,28 +79,44 @@ namespace SB014.UnitTests.Api
             // Assert
             tournamentRepositoryMock.Verify(mock => mock.Update(It.Is<Tournament>(x=>x.PreplayGameId == preplayGameId)), Times.Once());      
         }
+  
         [Fact]
-         public void SetTournamentStateToPreplay()
-         {
-            // Arrange
-            var tournamentRepositoryMock = new Mock<ITournamentRepository>();
-            var mapper = Helper.SetupMapper();
-            var gameLogicFake = new Mock<IGameLogic>();
-            Guid preplayGameId = new Guid();
-            gameLogicFake.Setup(m=>m.BuildGame(It.IsAny<Guid>(),It.IsAny<int>())).Returns(new Game{GameId = preplayGameId});
-            ITournamentLogic tournamentLogic = new TournamentLogic(tournamentRepositoryMock.Object, gameLogicFake.Object);
- 
-            // Act
-            Tournament t = tournamentLogic.SetPreplay(new Tournament{
-                Id = new Guid(),
-                PreplayGameId = null,
-                InplayGameId = null,
-                PostplayGameId = null,
-                CluesPerGame = 1
-            });
+        public void MoveExistingInplayGameToPostplay_WhenInplay()
+        {
+        //  // Arrange
+        //     var tournamentRepositoryMock = new Mock<ITournamentRepository>();
+        //     var mapper = Helper.SetupMapper();
+        //     var gameLogicFake = new Mock<IGameLogic>();
+        //     gameLogicFake.Setup(m=>m.BuildGame(It.IsAny<Guid>(),It.IsAny<int>())).Returns(new Game());
+        //     ITournamentLogic tournamentLogic = new TournamentLogic(tournamentRepositoryMock.Object, gameLogicFake.Object);
+        //     Guid existingInplayGameId = Guid.NewGuid();
+        //     // Act
+        //     Tournament t = tournamentLogic.SetPreplay(new Tournament{
+        //         Id = new Guid(),
+        //         PreplayGameId = Guid.NewGuid(),
+        //         InplayGameId = existingInplayGameId,
+        //         PostplayGameId = null,
+        //         CluesPerGame = 1,
+        //         State = (int)TournamentStatus.InPlay
+        //     });
 
-            // Assert
-            tournamentRepositoryMock.Verify(mock => mock.Update(It.Is<Tournament>(x=>x.State == (int)TournamentStatus.PrePlay)), Times.Once());      
+        //     // Assert
+        //     tournamentRepositoryMock.Verify(mock => mock.Update(It.Is<Tournament>(x=>x.PostplayGameId == existingInplayGameId)), Times.Once());             
+        }
+        
+        [Fact]
+        public void BuildNewPreplayGame_WhenInplay()
+        {
+                 
+        }  
+        [Fact]
+        public void TestName()
+        {
+        //Given
+        
+        //When
+        
+        //Then
         }
     }
 }

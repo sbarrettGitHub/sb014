@@ -8,7 +8,7 @@ using SB014.API.BAL;
 using SB014.API.Domain;
 using Microsoft.AspNetCore.JsonPatch;
 using SB014.API.Domain.Enums;
-
+using SB014.API.Models;
 namespace SB014.UnitTests.Api
 {
     public class Tournament_UpdateTournamentStateShould
@@ -25,7 +25,7 @@ namespace SB014.UnitTests.Api
             var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
 
             // Act 
-            var actionResult = tournamentController.Update(Guid.NewGuid(), new JsonPatchDocument<Tournament>().Replace(t=>t.State,(int)TournamentStatus.PrePlay));
+            var actionResult = tournamentController.Update(Guid.NewGuid(), new JsonPatchDocument<TournamentStateUpdateModel>().Replace(t=>t.State,TournamentState.PrePlay));
 
             // Assert
             Assert.IsType<NotFoundResult>(actionResult);
@@ -37,13 +37,18 @@ namespace SB014.UnitTests.Api
             // Arrange
             var tournamentRepositoryFake = new Mock<ITournamentRepository>();
             var mapper = Helper.SetupMapper();
-            tournamentRepositoryFake.Setup(p=>p.Get(It.IsAny<Guid>())).Returns(new Tournament{State = (int)TournamentStatus.NoPlay});
+            tournamentRepositoryFake.Setup(p=>p.Get(It.IsAny<Guid>())).Returns(new Tournament{
+                                                                                            Id = new Guid(),
+                                                                                            PreplayGameId = null,
+                                                                                            InplayGameId = null,
+                                                                                            PostplayGameId = null,
+                                                                                            CluesPerGame = 1});
             var gameLogicFake = new Mock<IGameLogic>();
             var tournamnetLogicMock = new Mock<ITournamentLogic>();
             var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicMock.Object);
             
             // Act
-            var actionResult = tournamentController.Update(new Guid(), new JsonPatchDocument<Tournament>().Replace(t=>t.State,(int)TournamentStatus.PrePlay));
+            var actionResult = tournamentController.Update(new Guid(), new JsonPatchDocument<TournamentStateUpdateModel>().Replace(t=>t.State,TournamentState.PrePlay));
 
             tournamnetLogicMock.Verify(mocks=>mocks.SetPreplay(It.IsAny<Tournament>()), Times.Once);
          }

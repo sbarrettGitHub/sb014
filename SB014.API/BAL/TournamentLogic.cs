@@ -16,23 +16,25 @@ namespace SB014.API.BAL
         ///
         public Tournament SetPreplay(Tournament tournament)
         {
-            // Set the state
-            tournament.State = (int)Domain.Enums.TournamentStatus.PrePlay;
-            
-            // If Pre, In and Post play games are all un set then build a new game, set it as tournament preplay 
-            // and save the game and tournament
-            if(tournament.PreplayGameId.HasValue == false
-                && tournament.InplayGameId.HasValue == false
-                && tournament.PostplayGameId.HasValue == false)
-                {
+            switch (tournament.State)
+            {
+                case Domain.Enums.TournamentState.NoPlay:
+                    // Set tournament as  preplay 
+                    // and save the game and tournament
                     Game newPreplayGame = this.GameLogic.BuildGame(tournament.Id, tournament.CluesPerGame);
-                    newPreplayGame.GameStatusId = (int)Domain.Enums.GameStatus.PrePlay;
                     this.TournamentRepository.UpdateGame(newPreplayGame);
                     
                     tournament.PreplayGameId = newPreplayGame.GameId;
+                    tournament.InplayGameId = null;
+                    tournament.PostplayGameId = null;
                     this.TournamentRepository.Update(tournament);
-                }
-            
+                break;
+                case Domain.Enums.TournamentState.InPlay:
+                break;
+                case Domain.Enums.TournamentState.PrePlay:
+                break;
+            }          
+
             return tournament;
         }
     }

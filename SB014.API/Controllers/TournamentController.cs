@@ -106,7 +106,7 @@ namespace SB014.API.Controllers
         }
         [HttpPatch]
         [Route("{id}")]
-        public IActionResult Update(Guid id, [FromBody]JsonPatchDocument<Tournament> jsonPatchDocument)
+        public IActionResult Update(Guid id, [FromBody]JsonPatchDocument<TournamentStateUpdateModel> jsonPatchDocument)
         {
             // Get the tournament
             Tournament tournament = this.TournamentRepository.Get(id);
@@ -116,10 +116,10 @@ namespace SB014.API.Controllers
             }
             
             // Get the current tournament status 
-            int initialState = tournament.State;
+            TournamentState initialState = tournament.State;
 
             // Update the tournament
-            Tournament tournamentUpdate = new Tournament();
+            TournamentStateUpdateModel tournamentUpdate = new TournamentStateUpdateModel();
             jsonPatchDocument.ApplyTo(tournamentUpdate);
 
             // Only honour the update of a state
@@ -128,7 +128,7 @@ namespace SB014.API.Controllers
                 switch (tournamentUpdate.State)
                 {
                     // Updating to preplay
-                    case (int)TournamentStatus.PrePlay:
+                    case TournamentState.PrePlay:
                         this.TournamentLogic.SetPreplay(tournament);
                     break;
                 }
