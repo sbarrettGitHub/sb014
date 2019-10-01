@@ -9,7 +9,7 @@ namespace SB014.API.Domain
         {
             Clues = new List<Clue>();
         }
-        public Guid GameId { get; set; }
+        public Guid Id { get; set; }
         public Guid TournamentId { get; set; }
         public List<Clue> Clues { get; set; }
     }

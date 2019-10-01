@@ -33,6 +33,17 @@ namespace SB014.API.Controllers
         {            
             return Ok(Mapper.Map<List<Tournament>,List<TournamentModel>>(this.TournamentRepository.GetAll()));
         }
+        [HttpGet]
+        [Route("{tournamentid}/game/{id}", Name="TournamentGame")]
+        public IActionResult GetTournamentGame(Guid tournamentid, Guid id)
+        {
+            Game tournamentGame = this.TournamentRepository.GetGame(tournamentid,id);
+            if(tournamentGame == null)
+            {
+                return NotFound();
+            }
+            return Ok(Mapper.Map<Game,GameModel>(tournamentGame));
+        }
 
         [HttpGet]
         [Route("{tournamentid}/subscriber/{id}", Name="TournamentSubscriber")]

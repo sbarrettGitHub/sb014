@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Generic;
 
 namespace SB014.API.Models
 {
     public class GameModel
     {
-        public int GameStatusId {get; set;}
+        public Guid Id { get; set; }
+        public Guid TournamentId { get; set; }
         public List<ClueModel> Clues { get; set; }
     }
 }

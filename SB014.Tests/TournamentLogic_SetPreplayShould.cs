@@ -64,7 +64,7 @@ namespace SB014.UnitTests.Api
             var mapper = Helper.SetupMapper();
             var gameLogicFake = new Mock<IGameLogic>();
             Guid preplayGameId = new Guid();
-            gameLogicFake.Setup(m=>m.BuildGame(It.IsAny<Guid>(),It.IsAny<int>())).Returns(new Game{GameId = preplayGameId});
+            gameLogicFake.Setup(m=>m.BuildGame(It.IsAny<Guid>(),It.IsAny<int>())).Returns(new Game{Id = preplayGameId});
             ITournamentLogic tournamentLogic = new TournamentLogic(tournamentRepositoryMock.Object, gameLogicFake.Object);
  
             // Act

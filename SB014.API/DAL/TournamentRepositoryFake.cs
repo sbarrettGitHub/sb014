@@ -85,11 +85,32 @@ namespace SB014.API.DAL
         }
         public Game UpdateGame(Game game)
         {
-            if(game.GameId == Guid.Empty)
+            var tournament = TournamentRepositoryFake.Tournaments.FirstOrDefault(t=>t.Id==game.TournamentId);
+            if(tournament==null)
             {
-                game.GameId = Guid.NewGuid();
+                throw new Exception("Tournament not found!");
             }
+
+            if(game.Id == Guid.Empty)
+            {
+                game.Id = Guid.NewGuid();
+                TournamentRepositoryFake.TournamentGames.Add(game);
+            }
+            else
+            {
+                var existingGame = TournamentRepositoryFake.TournamentGames.FirstOrDefault(tg=>tg.TournamentId==game.TournamentId && tg.Id == game.Id);
+                if(existingGame==null)
+                {
+                    throw new Exception("Game not found!");
+                }
+                existingGame.Clues = game.Clues;
+            }
+            
             return game;
+        }
+        public Game GetGame(Guid tournamentId, Guid id)
+        {
+            return TournamentRepositoryFake.TournamentGames.FirstOrDefault(tg=>tg.TournamentId == tournamentId && tg.Id == id);
         }
     }
 }

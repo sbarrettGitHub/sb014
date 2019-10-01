@@ -24,7 +24,7 @@ namespace SB014.API.BAL
                     Game newPreplayGame = this.GameLogic.BuildGame(tournament.Id, tournament.CluesPerGame);
                     this.TournamentRepository.UpdateGame(newPreplayGame);
                     
-                    tournament.PreplayGameId = newPreplayGame.GameId;
+                    tournament.PreplayGameId = newPreplayGame.Id;
                     tournament.InplayGameId = null;
                     tournament.PostplayGameId = null;
                     this.TournamentRepository.Update(tournament);
