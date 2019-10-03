@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SB014.API.BAL;
 using SB014.API.DAL;
+using SB014.API.Helpers;
 using SB014.API.Hubs;
 using SB014.API.Models;
 
@@ -32,6 +33,7 @@ namespace SB014.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<ITournamentRepository, TournamentRepositoryFake>();
+            services.AddSingleton<IDateTimeHelper, IDateTimeHelper>();
             services.AddScoped<IWordRepository, WordRepositoryFake>();
             services.AddScoped<ITournamentLogic, TournamentLogic>();
             services.AddScoped<IGameLogic, GameLogic>();            

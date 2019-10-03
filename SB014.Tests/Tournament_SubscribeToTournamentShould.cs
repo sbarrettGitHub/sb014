@@ -7,6 +7,7 @@ using System;
 using SB014.API.Models;
 using SB014.API.BAL;
 using SB014.API.Domain;
+using SB014.API.Helpers;
 
 namespace SB014.UnitTests.Api
 {
@@ -112,7 +113,8 @@ namespace SB014.UnitTests.Api
             tournamentRepositoryMock.Setup(p=>p.AddSubscriber(It.IsAny<Subscriber>())).Returns(new Subscriber {Id = new Guid()});
             var wordReposFake = new Mock<IWordRepository>();
             var mapper = Helper.SetupMapper();
-            var gameLogic = new GameLogic(wordReposFake.Object);
+            var DateTimeHelperFake = new Mock<DateTimeHelper>();
+            var gameLogic = new GameLogic(wordReposFake.Object, DateTimeHelperFake.Object);
             var tournamnetLogicFake = new Mock<ITournamentLogic>();
             var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogic, tournamnetLogicFake.Object);
 
@@ -124,7 +126,7 @@ namespace SB014.UnitTests.Api
         }
         [Fact]
         public void SaveNewTournamentGame_WhenNoGameExists()
-        {
+        { 
             //Arrange
             var tournamentRepositoryMock = new Mock<ITournamentRepository>();
             tournamentRepositoryMock.Setup(p=>p.Get(It.IsAny<Guid>())).Returns(new Tournament());

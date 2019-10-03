@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using SB014.API.DAL;
 using SB014.API.Domain;
+using SB014.API.Helpers;
 
 namespace SB014.API.BAL
 {
@@ -9,9 +10,11 @@ namespace SB014.API.BAL
     {
         
         private readonly IWordRepository WordRepository; 
-        public GameLogic(IWordRepository wordRepository)
+        private readonly IDateTimeHelper DateTimeHelper; 
+        public GameLogic(IWordRepository wordRepository, DateTimeHelper dateTimeHelper)
         {
             WordRepository = wordRepository;
+            DateTimeHelper = dateTimeHelper;
         }
 
         public Game BuildGame(Guid tournamentId, int cluesPerGame)
@@ -33,7 +36,8 @@ namespace SB014.API.BAL
             return new Game{
                 Id = Guid.NewGuid(),
                 TournamentId = tournamentId,
-                Clues = anagrams
+                Clues = anagrams,
+                Created = this.DateTimeHelper.CurrentDateTime
             };
         }
 
