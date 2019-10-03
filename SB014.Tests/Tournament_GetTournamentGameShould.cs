@@ -14,7 +14,7 @@ namespace SB014.UnitTests.Api
     public class Tournament_GetTournamentGameShould
     {
         [Fact]
-        public void ReturnStatusNotFound_WhenTournmenetDoesNotExist()
+        public void ReturnStatusNotFound_WhenTournamentDoesNotExist()
         {
             // Arrange
             var tournamentRepositoryFake = new Mock<ITournamentRepository>();
@@ -31,7 +31,7 @@ namespace SB014.UnitTests.Api
             Assert.IsType<NotFoundResult>(actionResult);
         }
         [Fact]
-        public void ReturnStatusNotFound_WhenTournmenetGameDoesNotExist()
+        public void ReturnStatusNotFound_WhenTournamentGameDoesNotExist()
         {
             // Arrange
             var tournamentRepositoryFake = new Mock<ITournamentRepository>();

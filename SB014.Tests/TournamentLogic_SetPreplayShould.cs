@@ -13,7 +13,7 @@ namespace SB014.UnitTests.Api
     {
 
          [Fact]
-         public void BuildNewPreplayGame_WhenAllGamesAreUnSet()
+         public void BuildNewPreplayGame_WhenInNoPlay()
          {
             // Arrange
             var tournamentRepositoryFake = new Mock<ITournamentRepository>();
@@ -29,19 +29,22 @@ namespace SB014.UnitTests.Api
                 InplayGameId = null,
                 PostplayGameId = null,
                 CluesPerGame = 1
-            });
+            },out Game newPreplayGame);
 
             // Assert
             gameLogicMock.Verify(mock => mock.BuildGame(It.IsAny<Guid>(), It.IsAny<int>()), Times.Once());         
-        }
+        }       
+ 
+
         [Fact]
-         public void SaveNewPreplayGame_WhenAllAreUnSet()
+         public void SetPreplayGame_WhenInNoPlayAndNewPreplayGameCreated()
          {
             // Arrange
             var tournamentRepositoryMock = new Mock<ITournamentRepository>();
             var mapper = Helper.SetupMapper();
             var gameLogicFake = new Mock<IGameLogic>();
-            gameLogicFake.Setup(m=>m.BuildGame(It.IsAny<Guid>(),It.IsAny<int>())).Returns(new Game());
+            Guid newPreplayGameId = new Guid();
+            gameLogicFake.Setup(m=>m.BuildGame(It.IsAny<Guid>(),It.IsAny<int>())).Returns(new Game{Id = newPreplayGameId});
             ITournamentLogic tournamentLogic = new TournamentLogic(tournamentRepositoryMock.Object, gameLogicFake.Object);
  
             // Act
@@ -51,72 +54,56 @@ namespace SB014.UnitTests.Api
                 InplayGameId = null,
                 PostplayGameId = null,
                 CluesPerGame = 1
-            });
+            },out Game newPreplayGame);
 
             // Assert
-            tournamentRepositoryMock.Verify(mock => mock.UpdateGame(It.IsAny<Game>()), Times.Once());      
-        }
-        [Fact]
-         public void UpdateTournamentPreplayGameId_WhenAllGamesAreUnSetAndNewPreplayGameCreated()
-         {
-            // Arrange
-            var tournamentRepositoryMock = new Mock<ITournamentRepository>();
-            var mapper = Helper.SetupMapper();
-            var gameLogicFake = new Mock<IGameLogic>();
-            Guid preplayGameId = new Guid();
-            gameLogicFake.Setup(m=>m.BuildGame(It.IsAny<Guid>(),It.IsAny<int>())).Returns(new Game{Id = preplayGameId});
-            ITournamentLogic tournamentLogic = new TournamentLogic(tournamentRepositoryMock.Object, gameLogicFake.Object);
- 
-            // Act
-            Tournament t = tournamentLogic.SetPreplay(new Tournament{
-                Id = new Guid(),
-                PreplayGameId = null,
-                InplayGameId = null,
-                PostplayGameId = null,
-                CluesPerGame = 1
-            });
-
-            // Assert
-            tournamentRepositoryMock.Verify(mock => mock.Update(It.Is<Tournament>(x=>x.PreplayGameId == preplayGameId)), Times.Once());      
+            Assert.Equal(t.PreplayGameId, newPreplayGameId );
         }
   
         [Fact]
         public void MoveExistingInplayGameToPostplay_WhenInplay()
         {
-        //  // Arrange
-        //     var tournamentRepositoryMock = new Mock<ITournamentRepository>();
-        //     var mapper = Helper.SetupMapper();
-        //     var gameLogicFake = new Mock<IGameLogic>();
-        //     gameLogicFake.Setup(m=>m.BuildGame(It.IsAny<Guid>(),It.IsAny<int>())).Returns(new Game());
-        //     ITournamentLogic tournamentLogic = new TournamentLogic(tournamentRepositoryMock.Object, gameLogicFake.Object);
-        //     Guid existingInplayGameId = Guid.NewGuid();
-        //     // Act
-        //     Tournament t = tournamentLogic.SetPreplay(new Tournament{
-        //         Id = new Guid(),
-        //         PreplayGameId = Guid.NewGuid(),
-        //         InplayGameId = existingInplayGameId,
-        //         PostplayGameId = null,
-        //         CluesPerGame = 1,
-        //         State = (int)TournamentStatus.InPlay
-        //     });
+         // Arrange
+            var tournamentRepositoryMock = new Mock<ITournamentRepository>();
+            var mapper = Helper.SetupMapper();
+            var gameLogicFake = new Mock<IGameLogic>();
+            gameLogicFake.Setup(m=>m.BuildGame(It.IsAny<Guid>(),It.IsAny<int>())).Returns(new Game());
+            ITournamentLogic tournamentLogic = new TournamentLogic(tournamentRepositoryMock.Object, gameLogicFake.Object);
+            Guid existingInplayGameId = Guid.NewGuid();
+            // Act
+            Tournament t = tournamentLogic.SetPreplay(new Tournament{
+                Id = new Guid(),
+                PreplayGameId = Guid.NewGuid(),
+                InplayGameId = existingInplayGameId,
+                PostplayGameId = null,
+                CluesPerGame = 1
+            },out Game newPreplayGame);
 
-        //     // Assert
-        //     tournamentRepositoryMock.Verify(mock => mock.Update(It.Is<Tournament>(x=>x.PostplayGameId == existingInplayGameId)), Times.Once());             
+            // Assert
+            Assert.True(t.PostplayGameId == existingInplayGameId);
         }
-        
+
         [Fact]
-        public void BuildNewPreplayGame_WhenInplay()
+        public void ClearExistingInplayGame_WhenInplay()
         {
-                 
-        }  
-        [Fact]
-        public void TestName()
-        {
-        //Given
-        
-        //When
-        
-        //Then
-        }
+         // Arrange
+            var tournamentRepositoryMock = new Mock<ITournamentRepository>();
+            var mapper = Helper.SetupMapper();
+            var gameLogicFake = new Mock<IGameLogic>();
+            gameLogicFake.Setup(m=>m.BuildGame(It.IsAny<Guid>(),It.IsAny<int>())).Returns(new Game());
+            ITournamentLogic tournamentLogic = new TournamentLogic(tournamentRepositoryMock.Object, gameLogicFake.Object);
+            Guid existingInplayGameId = Guid.NewGuid();
+            // Act
+            Tournament t = tournamentLogic.SetPreplay(new Tournament{
+                Id = new Guid(),
+                PreplayGameId = Guid.NewGuid(),
+                InplayGameId = existingInplayGameId,
+                PostplayGameId = null,
+                CluesPerGame = 1
+            },out Game newPreplayGame);
+
+            // Assert
+            Assert.True(t.InplayGameId == null);
+        }        
     }
 }

@@ -94,17 +94,17 @@ namespace SB014.API.DAL
             if(game.Id == Guid.Empty)
             {
                 game.Id = Guid.NewGuid();
+            }
+           
+            var existingGame = TournamentRepositoryFake.TournamentGames.FirstOrDefault(tg=>tg.TournamentId==game.TournamentId && tg.Id == game.Id);
+            if(existingGame==null)
+            {
                 TournamentRepositoryFake.TournamentGames.Add(game);
             }
             else
             {
-                var existingGame = TournamentRepositoryFake.TournamentGames.FirstOrDefault(tg=>tg.TournamentId==game.TournamentId && tg.Id == game.Id);
-                if(existingGame==null)
-                {
-                    throw new Exception("Game not found!");
-                }
                 existingGame.Clues = game.Clues;
-            }
+            }  
             
             return game;
         }

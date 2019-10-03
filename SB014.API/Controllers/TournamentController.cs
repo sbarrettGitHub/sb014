@@ -136,14 +136,42 @@ namespace SB014.API.Controllers
             // Only honour the update of a state
             if(tournamentUpdate.State != initialState)
             {
+                // If the current state is No play then treat any state change as an update to PrePlay
+                if(initialState == TournamentState.NoPlay)
+                {
+                    tournamentUpdate.State = TournamentState.PrePlay;
+                }
+
+                Game newPreplayGame;
+                // Apply logic rules to state change
                 switch (tournamentUpdate.State)
                 {
                     // Updating to preplay
                     case TournamentState.PrePlay:
-                        this.TournamentLogic.SetPreplay(tournament);
+                        // Apply the rules for setting the new Preplay state
+                        tournament = this.TournamentLogic.SetPreplay(tournament, out newPreplayGame);
+                        // Save the new preplay if one is created
+                        if(newPreplayGame != null)
+                        {
+                            this.TournamentRepository.UpdateGame(newPreplayGame);
+                        }
                     break;
+                    // Updating to preplay
+                    case TournamentState.InPlay:
+                        // Apply the rules for setting the new Inplay state
+                        tournament = this.TournamentLogic.SetInplay(tournament, out newPreplayGame);
+                        // Save the new preplay if one is created
+                        if(newPreplayGame != null)
+                        {
+                            this.TournamentRepository.UpdateGame(newPreplayGame);
+                        }
+                        break;
+                    default:                        
+                        break;
                 }
                 
+                // Update the tournament state
+                this.TournamentRepository.Update(tournament);
             }
             
             
