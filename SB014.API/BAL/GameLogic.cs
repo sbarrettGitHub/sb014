@@ -11,7 +11,7 @@ namespace SB014.API.BAL
         
         private readonly IWordRepository WordRepository; 
         private readonly IDateTimeHelper DateTimeHelper; 
-        public GameLogic(IWordRepository wordRepository, DateTimeHelper dateTimeHelper)
+        public GameLogic(IWordRepository wordRepository, IDateTimeHelper dateTimeHelper)
         {
             WordRepository = wordRepository;
             DateTimeHelper = dateTimeHelper;

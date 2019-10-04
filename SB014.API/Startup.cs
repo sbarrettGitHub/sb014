@@ -33,7 +33,7 @@ namespace SB014.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<ITournamentRepository, TournamentRepositoryFake>();
-            services.AddSingleton<IDateTimeHelper, IDateTimeHelper>();
+            services.AddSingleton<IDateTimeHelper, DateTimeHelper>();
             services.AddScoped<IWordRepository, WordRepositoryFake>();
             services.AddScoped<ITournamentLogic, TournamentLogic>();
             services.AddScoped<IGameLogic, GameLogic>();            

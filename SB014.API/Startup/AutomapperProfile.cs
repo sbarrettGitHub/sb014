@@ -12,6 +12,7 @@ namespace SB014.API
             CreateMap<SubscribeToTournamentModel, Subscriber>();
             CreateMap<Subscriber,SubscriberModel>();
             CreateMap<Game,GameModel>();
+            CreateMap<Clue,ClueModel>();
         }
     }
 }
