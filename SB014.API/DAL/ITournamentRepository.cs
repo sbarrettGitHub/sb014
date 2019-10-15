@@ -16,6 +16,7 @@ namespace SB014.API.DAL
         void RemoveSubscriber(Guid tournamentId, Guid id);
         Game UpdateGame(Game game);
         Game GetGame(Guid tournamentId, Guid id);
+
     }
 
 }
