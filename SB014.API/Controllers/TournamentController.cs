@@ -34,7 +34,7 @@ namespace SB014.API.Controllers
             return Ok(Mapper.Map<List<Tournament>,List<TournamentModel>>(this.TournamentRepository.GetAll()));
         }
         [HttpGet]
-        [Route("{id}", Name="TournamentGame")]
+        [Route("{id}", Name="Tournament")]
         public object GetTournament(Guid id)
         {
             Tournament tournament = this.TournamentRepository.Get(id);
