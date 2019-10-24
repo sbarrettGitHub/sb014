@@ -26,7 +26,8 @@ namespace SB014.API.Controllers
             this.Mapper = mapper;
             this.GameLogic = gameLogic;
             this.TournamentLogic = tournamentLogic;
-        }         
+        }
+
 
         [HttpGet]
         public IActionResult GetTournaments()
@@ -35,7 +36,7 @@ namespace SB014.API.Controllers
         }
         [HttpGet]
         [Route("{id}", Name="Tournament")]
-        public object GetTournament(Guid id)
+        public IActionResult GetTournament(Guid id)
         {
             Tournament tournament = this.TournamentRepository.Get(id);
             if(tournament == null)
@@ -127,6 +128,7 @@ namespace SB014.API.Controllers
 
             return NoContent();
         }
+        #region StateManagement
         [HttpPatch]
         [Route("{id}")]
         public IActionResult Update(Guid id, [FromBody]JsonPatchDocument<TournamentStateUpdateModel> jsonPatchDocument)
@@ -148,40 +150,9 @@ namespace SB014.API.Controllers
             // Only honour the update of a state
             if(tournamentUpdate.State != initialState)
             {
-                // If the current state is No play then treat any state change as an update to PrePlay
-                if(initialState == TournamentState.NoPlay)
-                {
-                    tournamentUpdate.State = TournamentState.PrePlay;
-                }
+                // Set tournament state based on logic rules
+                SetState(tournament, initialState, tournamentUpdate);
 
-                Game newPreplayGame;
-                // Apply logic rules to state change
-                switch (tournamentUpdate.State)
-                {
-                    // Updating to preplay
-                    case TournamentState.PrePlay:
-                        // Apply the rules for setting the new Preplay state
-                        tournament = this.TournamentLogic.SetPreplay(tournament, out newPreplayGame);
-                        // Save the new preplay if one is created
-                        if(newPreplayGame != null)
-                        {
-                            this.TournamentRepository.UpdateGame(newPreplayGame);
-                        }
-                    break;
-                    // Updating to preplay
-                    case TournamentState.InPlay:
-                        // Apply the rules for setting the new Inplay state
-                        tournament = this.TournamentLogic.SetInplay(tournament, out newPreplayGame);
-                        // Save the new preplay if one is created
-                        if(newPreplayGame != null)
-                        {
-                            this.TournamentRepository.UpdateGame(newPreplayGame);
-                        }
-                        break;
-                    default:                        
-                        break;
-                }
-                
                 // Update the tournament state
                 this.TournamentRepository.Update(tournament);
             }
@@ -189,6 +160,78 @@ namespace SB014.API.Controllers
             
             // Return success
             return NoContent();
+        }
+        
+        [HttpPost]
+        [Route("{id}/bell")]
+        public IActionResult AddTournamentStateBell(Guid id)
+        {
+            Tournament tournament = this.TournamentRepository.Get(id);
+            if(tournament == null)
+            {
+                return NotFound();
+            }
+            // Get the current tournament status 
+            TournamentState initialState = tournament.State;
+
+            TournamentStateUpdateModel tournamentStateChange = this.TournamentLogic.AddBell(tournament);
+            
+            // Set tournament state based on logic rules
+            SetState(tournament, initialState, tournamentStateChange);
+
+            // Update the tournament state
+            this.TournamentRepository.Update(tournament);
+
+            // Return the updated tournament
+            return Ok(Mapper.Map<Tournament,TournamentModel>(this.TournamentRepository.Get(id)));
+        }
+
+        #endregion
+        private void SetState(Tournament tournament, TournamentState initialState, TournamentStateUpdateModel tournamentUpdate)
+        {
+            // If the current state is No play then treat any state change as an update to PrePlay
+            if(initialState == TournamentState.NoPlay)
+            {
+                tournamentUpdate.State = TournamentState.PrePlay;
+            }
+
+            Game newPreplayGame;
+            // Apply logic rules to state change
+            switch (tournamentUpdate.State)
+            {
+                // Updating to preplay
+                case TournamentState.PrePlay:
+                    // Apply the rules for setting the new Preplay state
+                    tournament = this.TournamentLogic.SetPreplay(tournament, out newPreplayGame);
+                    // Save the new preplay if one is created
+                    if(newPreplayGame != null)
+                    {
+                        this.TournamentRepository.UpdateGame(newPreplayGame);
+                    }
+                break;
+                // Updating to preplay
+                case TournamentState.InPlay:
+                    // Apply the rules for setting the new Inplay state
+                    tournament = this.TournamentLogic.SetInplay(tournament, out newPreplayGame);
+                    // Save the new preplay if one is created
+                    if(newPreplayGame != null)
+                    {
+                        this.TournamentRepository.UpdateGame(newPreplayGame);
+                    }
+                    break;
+                // Updating to post play
+                case TournamentState.PostPlay:
+                    // Apply the rules for setting the new Inplay state
+                    tournament = this.TournamentLogic.SetPostplay(tournament, out newPreplayGame);
+                    // Save the new preplay if one is created
+                    if(newPreplayGame != null)
+                    {
+                        this.TournamentRepository.UpdateGame(newPreplayGame);
+                    }
+                    break;
+                default:                        
+                    break;
+            }
         }
     }
 }
