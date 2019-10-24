@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SB014.API.Domain;
+using SB014.API.Domain.Enums;
 
 namespace SB014.API.DAL
 {
@@ -19,7 +20,30 @@ namespace SB014.API.DAL
                     new Tournament 
                     {
                         Id = Guid.NewGuid(),
-                        CluesPerGame = 20
+                        CluesPerGame = 20,
+                        BellStateLookupMatrix = new List<BellStateLookup>
+                        {
+                            new BellStateLookup
+                            {
+                                BellCounter = 1,
+                                State = TournamentState.PrePlay
+                            },
+                            new BellStateLookup
+                            {
+                                BellCounter = 2,
+                                State = TournamentState.InPlay
+                            },
+                            new BellStateLookup
+                            {
+                                BellCounter = 3,
+                                State = TournamentState.InPlay
+                            }                            ,
+                            new BellStateLookup
+                            {
+                                BellCounter = 4,
+                                State = TournamentState.PostPlay
+                            }
+                        }
                     }
                 );               
             }

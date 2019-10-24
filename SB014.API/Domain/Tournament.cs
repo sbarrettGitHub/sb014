@@ -1,8 +1,14 @@
 using System;
+using System.Collections.Generic;
 using SB014.API.Domain.Enums;
 
 namespace SB014.API.Domain
 {
+    public class BellStateLookup
+    {
+        public int BellCounter { get; set; }
+        public TournamentState State { get; set; }
+    }
     public class Tournament
     {
         public Guid Id { get; set; }
@@ -11,7 +17,7 @@ namespace SB014.API.Domain
         public Guid? PostplayGameId { get; set; }
 
         public int CluesPerGame { get; set; }
-
+        public List<BellStateLookup> BellStateLookupMatrix { get; set; }
         public TournamentState State {
             get{
                 if(this.PreplayGameId.HasValue == false
@@ -24,12 +30,18 @@ namespace SB014.API.Domain
                 {
                     return TournamentState.InPlay;
                 }
+                else if(this.PreplayGameId.HasValue && this.InplayGameId.HasValue == false && this.PostplayGameId.HasValue)
+                {
+                    return TournamentState.PostPlay;
+                }
                 else
                 {
                     return TournamentState.PrePlay;
                 }
             }
         }
+
+        public int BellCounter { get; set; }
     }
 
 
