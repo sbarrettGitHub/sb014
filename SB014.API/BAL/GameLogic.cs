@@ -27,7 +27,7 @@ namespace SB014.API.BAL
             {
                 anagrams.Add(new Clue
                 { 
-                    ClueId = Guid.NewGuid(),
+                    Id = Guid.NewGuid(),
                     GameClue = this.Scramble(word),
                     Answer = word
                 });
@@ -40,7 +40,21 @@ namespace SB014.API.BAL
                 Created = this.DateTimeHelper.CurrentDateTime
             };
         }
-
+        /// <summary>
+        /// Check if the suplierd answer attempt is the correct answer to the supplied clue
+        /// </summary>
+        /// <param name="answerAttempt"></param>
+        /// <param name="clue"></param>
+        /// <returns></returns>
+        public bool EvaluateSubscriberAnswer(string answerAttempt, Clue clue, out int score)
+        {
+            score = 0;
+            bool isCorrect = answerAttempt.ToLower() == clue.Answer.ToLower();
+            if(isCorrect){
+                score = clue.Answer.Length;
+            }
+            return isCorrect;
+        }
         private string Scramble(string word)
         {
             char[] chars = new char[word.Length]; 

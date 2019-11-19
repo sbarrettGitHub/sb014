@@ -8,7 +8,7 @@ using SB014.API.BAL;
 using SB014.API.Domain;
 using Microsoft.AspNetCore.JsonPatch;
 using SB014.API.Domain.Enums;
-
+using System.Linq;
 namespace SB014.API.Controllers
 {
     [Route("api/tournament")]
@@ -27,13 +27,13 @@ namespace SB014.API.Controllers
             this.GameLogic = gameLogic;
             this.TournamentLogic = tournamentLogic;
         }
-
-
         [HttpGet]
         public IActionResult GetTournaments()
         {            
             return Ok(Mapper.Map<List<Tournament>,List<TournamentModel>>(this.TournamentRepository.GetAll()));
         }
+
+
         [HttpGet]
         [Route("{id}", Name="Tournament")]
         public IActionResult GetTournament(Guid id)
@@ -186,6 +186,99 @@ namespace SB014.API.Controllers
             return Ok(Mapper.Map<Tournament,TournamentModel>(this.TournamentRepository.Get(id)));
         }
 
+        #endregion
+        
+        #region GamePlay
+        [HttpPost]
+        [Route("{tournamentid}/subscriber/{subscriberid}/game/{gameid}/clue/{id}/answerattempt")]
+        public IActionResult AddTournamentSubscriberGameAnswerAttempt(Guid tournamentid, Guid subscriberid, Guid gameid, Guid id, [FromBody] AnswerAttemptUpdateModel answerAttempt)
+        {
+            // Get the tournament
+            Tournament tournament = this.TournamentRepository.Get(tournamentid);
+            if(tournament == null)
+            {
+                return NotFound();
+            }
+            Subscriber subscriber = this.TournamentRepository.GetSubscriber(tournamentid, subscriberid);
+            if(subscriber == null)
+            {
+                return NotFound();  
+            }
+
+            Game tournamentGame = this.TournamentRepository.GetGame(tournamentid, gameid);
+            if(tournamentGame == null)
+            {
+                return NotFound();
+            }
+            
+            // Reject any answer to a game that not in play
+            if(tournament.InplayGameId != tournamentGame.Id)
+            {
+                return BadRequest();
+            }
+
+            Clue clue = tournamentGame.Clues.FirstOrDefault(x=>x.Id == id);
+            if(clue == null)
+            {
+                return NotFound();
+            }
+            
+            // Check the answer
+            int score;
+            bool isCorrect = this.GameLogic.EvaluateSubscriberAnswer(answerAttempt.Answer, clue, out score);
+            
+            // Records the answer attempt and score
+            this.TournamentRepository.UpdateSubscriberGameResult(tournamentid, subscriberid, gameid, clue.Id, answerAttempt.Answer, score);
+
+            if(isCorrect)
+            {                
+                return Ok();
+            }
+            
+            return BadRequest();
+        }
+        #endregion
+
+        #region  PostGame
+        
+        /// <summary>
+        /// Get the results of a particular tournament game for a specified subscriber
+        /// </summary>
+        /// <param name="tournamentid"></param>
+        /// <param name="subscriberid"></param>
+        /// <param name="gameid"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{tournamentid}/subscriber/{subscriberid}/game/{id}/results")]
+        public IActionResult GetTournamentSubscriberGameResults(Guid tournamentid, Guid subscriberid, Guid id)
+        {
+            // Get the tournament
+            Tournament tournament = this.TournamentRepository.Get(tournamentid);
+            if(tournament == null)
+            {
+                return NotFound();
+            }
+            Game tournamentGame = this.TournamentRepository.GetGame(tournamentid, id);
+            if(tournamentGame == null)
+            {
+                return NotFound();
+            }
+
+            Subscriber subscriber = this.TournamentRepository.GetSubscriber(tournamentid, subscriberid);
+            if(subscriber == null)
+            {
+                return NotFound();  
+            }
+
+            // Get the subscriber result of this game
+            SubscriberGameResult subscriberGameResults = this.TournamentRepository.GetSubscriberGameResult(tournamentid, subscriberid, id);
+
+            if(subscriberGameResults == null)
+            {
+                return NotFound(); 
+            }
+            return Ok(Mapper.Map<SubscriberGameResult,SubscriberGameResultModel>(subscriberGameResults));
+        }
         #endregion
         private void SetState(Tournament tournament, TournamentState initialState, TournamentStateUpdateModel tournamentUpdate)
         {

@@ -41,15 +41,15 @@
 					"raw": "{\n\tname: \"test subscriber 2\"\n}"
 				},
 				"url": {
-					"raw": "http://{{Host}}/api/tournament/57aacd3b-f770-467f-b45e-d13ab397efad/subscriber",
-					"protocol": "http",
+					"raw": "https://{{Host}}/api/tournament/{{Tournament}}/subscriber",
+					"protocol": "https",
 					"host": [
 						"{{Host}}"
 					],
 					"path": [
 						"api",
 						"tournament",
-						"57aacd3b-f770-467f-b45e-d13ab397efad",
+						"{{Tournament}}",
 						"subscriber"
 					]
 				}
@@ -79,13 +79,13 @@
 			"response": []
 		},
 		{
-			"name": "GetTournamentSubscriber",
+			"name": "UnsubscribeFromTournament Copy",
 			"request": {
-				"method": "GET",
+				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://{{Host}}/api/tournament/57aacd3b-f770-467f-b45e-d13ab397efad/subscriber/cd85c978-fffe-4753-8b14-b4a2c3c67611",
-					"protocol": "http",
+					"raw": "https://{{Host}}/api/tournament/57aacd3b-f770-467f-b45e-d13ab397efad/subscriber/cd85c978-fffe-4753-8b14-b4a2c3c67611",
+					"protocol": "https",
 					"host": [
 						"{{Host}}"
 					],
@@ -95,6 +95,286 @@
 						"57aacd3b-f770-467f-b45e-d13ab397efad",
 						"subscriber",
 						"cd85c978-fffe-4753-8b14-b4a2c3c67611"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTournamentSubscriber",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{Host}}/api/tournament/{{Tournament}}/subscriber/b7b0e11d-4198-41c6-8d37-9c2d647c8d08",
+					"protocol": "https",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"tournament",
+						"{{Tournament}}",
+						"subscriber",
+						"b7b0e11d-4198-41c6-8d37-9c2d647c8d08"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateState",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  { \"op\": \"replace\", \"path\": \"/State\", \"value\": \"3\" }\r\n]"
+				},
+				"url": {
+					"raw": "https://{{Host}}/api/tournament/877a6ee4-eebb-4ad9-9581-771a6eb9e5d0",
+					"protocol": "https",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"tournament",
+						"877a6ee4-eebb-4ad9-9581-771a6eb9e5d0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTournamentGame",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{Host}}/api/tournament/2a3941e0-3ce6-41da-a71f-c137553c410f/game/2ec785d3-8f2d-4799-a843-b3b0b5c41faf",
+					"protocol": "https",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"tournament",
+						"2a3941e0-3ce6-41da-a71f-c137553c410f",
+						"game",
+						"2ec785d3-8f2d-4799-a843-b3b0b5c41faf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTournament",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{Host}}/api/tournament/fbbc199a-f940-4180-ad76-32ed0a7a3bc3",
+					"protocol": "https",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"tournament",
+						"fbbc199a-f940-4180-ad76-32ed0a7a3bc3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Webster",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.merriam-webster.com/lapi/v1/mwol-search/stats/lookup?rp=dictionary&usp=slicht",
+					"protocol": "https",
+					"host": [
+						"www",
+						"merriam-webster",
+						"com"
+					],
+					"path": [
+						"lapi",
+						"v1",
+						"mwol-search",
+						"stats",
+						"lookup"
+					],
+					"query": [
+						{
+							"key": "rp",
+							"value": "dictionary"
+						},
+						{
+							"key": "usp",
+							"value": "slicht"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "thefreedictionary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.thefreedictionary.com/slight",
+					"protocol": "https",
+					"host": [
+						"www",
+						"thefreedictionary",
+						"com"
+					],
+					"path": [
+						"slight"
+					]
+				},
+				"description": "https://www.thefreedictionary.com/slight"
+			},
+			"response": []
+		},
+		{
+			"name": "AddBell",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://{{Host}}/api/tournament/{{Tournament}}/bell",
+					"protocol": "https",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"tournament",
+						"{{Tournament}}",
+						"bell"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:5001/api/xxhash?id=abandons",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/xxhash?id=abandons",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"xxhash"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "abandons"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SubmitAnswerAttempt",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\tAnswer: \"genres\"\n}"
+				},
+				"url": {
+					"raw": "https://{{Host}}/api/tournament/{{Tournament}}/subscriber/{{Subscriber}}/game/{{Game}}/clue/83b098b2-2c1b-4998-aae8-c2b0024835b8/answerattempt",
+					"protocol": "https",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"tournament",
+						"{{Tournament}}",
+						"subscriber",
+						"{{Subscriber}}",
+						"game",
+						"{{Game}}",
+						"clue",
+						"83b098b2-2c1b-4998-aae8-c2b0024835b8",
+						"answerattempt"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTournamentGame",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{Host}}/api/tournament/{{Tournament}}/game/{{Game}}",
+					"protocol": "https",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"tournament",
+						"{{Tournament}}",
+						"game",
+						"{{Game}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://{{Host}}/api/tournament/{{Tournament}}/subscriber/{{Subscriber}}/game/{{Game}}/results",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{Host}}/api/tournament/{{Tournament}}/subscriber/{{Subscriber}}/game/{{Game}}/results",
+					"protocol": "https",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"tournament",
+						"{{Tournament}}",
+						"subscriber",
+						"{{Subscriber}}",
+						"game",
+						"{{Game}}",
+						"results"
 					]
 				}
 			},

@@ -13,6 +13,9 @@ namespace SB014.API
             CreateMap<Subscriber,SubscriberModel>();
             CreateMap<Game,GameModel>();
             CreateMap<Clue,ClueModel>();
+            CreateMap<AnswerAttempt,AnswerAttemptModel>();
+            CreateMap<SubscriberGameResult,SubscriberGameResultModel>();
+
         }
     }
 }

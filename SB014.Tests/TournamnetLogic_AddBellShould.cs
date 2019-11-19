@@ -46,41 +46,7 @@ namespace SB014.UnitTests.Api
             // Assert
             Assert.NotEqual(0,tournament.BellCounter);
         }
-        [Fact]
-        public void SaveTournament_WhenStateChangesDueToBellCounter()
-        {
-            // Arrange
-            var tournamentRepositoryFake = new Mock<ITournamentRepository>();
-            var mapper = Helper.SetupMapper();
-            var gameLogicFake = new Mock<IGameLogic>();
-            ITournamentLogic tournamentLogic = new TournamentLogic(tournamentRepositoryFake.Object, gameLogicFake.Object);
-            Tournament tournament = new Tournament{
-                BellCounter = 0,
-                BellStateLookupMatrix = new List<BellStateLookup>
-                {
-                    new BellStateLookup
-                    {
-                        BellCounter = 1,
-                        State = TournamentState.PrePlay
-                    },
-                    new BellStateLookup
-                    {
-                        BellCounter = 2,
-                        State = TournamentState.PrePlay
-                    },
-                    new BellStateLookup
-                    {
-                        BellCounter = 3,
-                        State = TournamentState.InPlay
-                    }
-                }};
-            
-            // Act
-            tournamentLogic.AddBell(tournament);
-
-            // Assert
-            Assert.NotEqual(0,tournament.BellCounter);
-        }        
+        
         [Fact]
         public void DetermineNewTournamentState_WhenBellStateMatrixAvailable()
         {
