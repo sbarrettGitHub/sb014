@@ -22,6 +22,7 @@ namespace SB014.API.DAL
                     {
                         Id = Guid.NewGuid(),
                         CluesPerGame = 20,
+                        RankingCutOff = 100,
                         BellStateLookupMatrix = new List<BellStateLookup>
                         {
                             new BellStateLookup
@@ -226,6 +227,29 @@ namespace SB014.API.DAL
                 throw new Exception("Tournament subscriber not found!");
             }
             return TournamentRepositoryFake.SubscriberGameResults.FirstOrDefault(sgr=>sgr.TournamentId==tournamentId && sgr.GameId == gameId && sgr.SubscriberId == subscriberId);
+        }
+
+        /// <summary>
+        ///  Get all subscriber results for a specific game
+        /// </summary>
+        /// <param name="tournamentId"></param>
+        /// <param name="gameId"></param>
+        /// <returns></returns>
+        public List<SubscriberGameResult> GetAllSubscriberGameResults(Guid tournamentId, Guid gameId)
+        {
+            var tournament = TournamentRepositoryFake.Tournaments.FirstOrDefault(t=>t.Id==tournamentId);
+            if(tournament==null)
+            {
+                throw new Exception("Tournament not found!");
+            }
+
+            var game = TournamentRepositoryFake.TournamentGames.FirstOrDefault(tg=>tg.TournamentId==tournamentId && tg.Id == gameId);
+            if(game==null)
+            {
+                throw new Exception("Game not found!");
+            }
+
+            return TournamentRepositoryFake.SubscriberGameResults.Where(tg=>tg.TournamentId==tournamentId && tg.GameId == gameId).ToList();
         }
     }
 }
