@@ -18,6 +18,7 @@ namespace SB014.API.DAL
         Game GetGame(Guid tournamentId, Guid id);
         void UpdateSubscriberGameResult(Guid tournamentId, Guid subscriberId, Guid gameId, Guid clueId, string answer, int score);
         SubscriberGameResult GetSubscriberGameResult(Guid tournamentId, Guid subscriberId, Guid gameId);
+        List<SubscriberGameResult> GetAllSubscriberGameResults(Guid tournamentId, Guid gameId);
     }
 
 }

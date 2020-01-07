@@ -114,7 +114,7 @@ namespace SB014.UnitTests.Api
             var wordReposFake = new Mock<IWordRepository>();
             var mapper = Helper.SetupMapper();
             var DateTimeHelperFake = new Mock<DateTimeHelper>();
-            var gameLogic = new GameLogic(wordReposFake.Object, DateTimeHelperFake.Object);
+            var gameLogic = new GameLogic(wordReposFake.Object, DateTimeHelperFake.Object, tournamentRepositoryMock.Object);
             var tournamnetLogicFake = new Mock<ITournamentLogic>();
             var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogic, tournamnetLogicFake.Object);
 

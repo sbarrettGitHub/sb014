@@ -42,6 +42,13 @@ namespace SB014.API.Domain
         }
 
         public int BellCounter { get; set; }
+
+        /// <summary>
+        /// Max number of subscriber rankings returned in a game result 
+        /// e.g. if 100 then only top 100 subscribers returned in a request for the game results
+        /// </summary>
+        /// <value></value>
+        public int RankingCutOff { get; set; }
     }
 
 

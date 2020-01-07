@@ -277,7 +277,56 @@ namespace SB014.API.Controllers
             {
                 return NotFound(); 
             }
-            return Ok(Mapper.Map<SubscriberGameResult,SubscriberGameResultModel>(subscriberGameResults));
+
+            SubscriberGameResultModel model = Mapper.Map<SubscriberGameResult,SubscriberGameResultModel>(subscriberGameResults);
+
+            // Get the subscribers rank in the overall game rankings
+            var allRankings = this.GameLogic.BuildGameRankings(this.TournamentRepository.GetAllSubscriberGameResults(tournamentid, id), null);
+            var ranking = allRankings.FirstOrDefault(r=>r.SubscriberId == subscriberid);
+            if(ranking != null)
+            {       
+                model.Rank = ranking.Rank;
+            }
+            else
+            {
+                model.Rank = int.MaxValue;
+            }
+            
+            // Set subscriber rank by finding him in the game rankings
+            return Ok(model);
+        }
+        [HttpGet]
+        [Route("{tournamentid}/game/{id}/results")]
+        public IActionResult GetTournamentGameResults(Guid tournamentid, Guid id)
+        {
+            // Get the tournament
+            Tournament tournament = this.TournamentRepository.Get(tournamentid);
+            if(tournament == null)
+            {
+                return NotFound();
+            }
+            Game tournamentGame = this.TournamentRepository.GetGame(tournamentid,id);
+            if(tournamentGame == null)
+            {
+                return NotFound();
+            }
+
+            if(tournamentGame.Id == tournament.InplayGameId)
+            {
+                return BadRequest();
+            }
+            
+            GameResultsModel gameResults = new GameResultsModel
+            {
+                TournamentId = tournament.Id,
+                GameId = tournamentGame.Id,
+                Created = tournamentGame.Created,
+                ClueAnswers = Mapper.Map<List<Clue>,List<ClueAnswerModel>>(tournamentGame.Clues), // Get the answers of the game
+                Rankings = this.GameLogic.BuildGameRankings(this.TournamentRepository.GetAllSubscriberGameResults(tournamentid, id), tournament.RankingCutOff)
+                
+            };          
+           
+            return Ok(gameResults);
         }
         #endregion
         private void SetState(Tournament tournament, TournamentState initialState, TournamentStateUpdateModel tournamentUpdate)
@@ -326,5 +375,7 @@ namespace SB014.API.Controllers
                     break;
             }
         }
+
+
     }
 }

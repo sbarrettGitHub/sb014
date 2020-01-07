@@ -10,5 +10,7 @@ namespace SB014.API.Models
         public Guid GameId { get; set; }
         public Guid SubscriberId { get; set; }
         public List<AnswerAttemptModel> AnswerAttempts { get; set; }
+
+        public int Rank { get; set; }
     }
 }

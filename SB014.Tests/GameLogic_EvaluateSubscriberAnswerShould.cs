@@ -19,7 +19,8 @@ namespace SB014.UnitTests.Api
             var wordRepositoryFake = new Mock<IWordRepository>();
             wordRepositoryFake.Setup(p=>p.GetWords(It.IsAny<int>())).Returns(new List<string>{"one", "two"});
             var DateTimeHelperFake = new Mock<DateTimeHelper>();
-            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object);
+            var tournamentRepoFake = new Mock<TournamentRepositoryFake>();
+            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object, tournamentRepoFake.Object);
             string answer = "answer";
             Clue clue = new Clue {Answer = answer};
             int score;
@@ -36,7 +37,8 @@ namespace SB014.UnitTests.Api
             var wordRepositoryFake = new Mock<IWordRepository>();
             wordRepositoryFake.Setup(p=>p.GetWords(It.IsAny<int>())).Returns(new List<string>{"one", "two"});
             var DateTimeHelperFake = new Mock<DateTimeHelper>();
-            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object);
+            var tournamentRepoFake = new Mock<TournamentRepositoryFake>();
+            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object, tournamentRepoFake.Object);
             string answer = "WrongAnswer";
             Clue clue = new Clue {Answer = "answer"};
             int score;
@@ -53,7 +55,8 @@ namespace SB014.UnitTests.Api
             var wordRepositoryFake = new Mock<IWordRepository>();
             wordRepositoryFake.Setup(p=>p.GetWords(It.IsAny<int>())).Returns(new List<string>{"one", "two"});
             var DateTimeHelperFake = new Mock<DateTimeHelper>();
-            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object);
+            var tournamentRepoFake = new Mock<TournamentRepositoryFake>();
+            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object, tournamentRepoFake.Object);
             string answer = "answer";
             Clue clue = new Clue {Answer = "AnSwER"};
             int score;
@@ -69,7 +72,8 @@ namespace SB014.UnitTests.Api
             // Arrange
             var wordRepositoryFake = new Mock<IWordRepository>();
             var DateTimeHelperFake = new Mock<DateTimeHelper>();
-            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object);
+            var tournamentRepoFake = new Mock<TournamentRepositoryFake>();
+            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object, tournamentRepoFake.Object);
             string answer = "answer";
             Clue clue = new Clue {Answer = answer};
             int score;
@@ -85,7 +89,8 @@ namespace SB014.UnitTests.Api
             // Arrange
             var wordRepositoryFake = new Mock<IWordRepository>();
             var DateTimeHelperFake = new Mock<DateTimeHelper>();
-            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object);
+            var tournamentRepoFake = new Mock<TournamentRepositoryFake>();
+            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object, tournamentRepoFake.Object);
             string answer = "answer";
             Clue clue = new Clue {Answer = answer};
             int score;

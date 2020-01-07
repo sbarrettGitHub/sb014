@@ -19,7 +19,8 @@ namespace SB014.UnitTests.Api
             var wordRepositoryFake = new Mock<IWordRepository>();
             wordRepositoryFake.Setup(p=>p.GetWords(It.IsAny<int>())).Returns(new List<string>{"one", "two"});
             var DateTimeHelperFake = new Mock<DateTimeHelper>();
-            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object);
+            var tournamentRepoFake = new Mock<TournamentRepositoryFake>();
+            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object, tournamentRepoFake.Object);
 
             // Act
             Game game = gameLogic.BuildGame(new System.Guid(), 2);
@@ -34,7 +35,8 @@ namespace SB014.UnitTests.Api
             var wordRepositoryFake = new Mock<IWordRepository>();
             wordRepositoryFake.Setup(p=>p.GetWords(It.IsAny<int>())).Returns(new List<string>{"one", "two"});
             var DateTimeHelperFake = new Mock<DateTimeHelper>();
-            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object);
+            var tournamentRepoFake = new Mock<TournamentRepositoryFake>();
+            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object, tournamentRepoFake.Object);
 
             // Act
             Game game = gameLogic.BuildGame(new System.Guid(), 2);
@@ -49,7 +51,8 @@ namespace SB014.UnitTests.Api
             // Arrange
             var wordRepositoryMock = new Mock<IWordRepository>();
             var DateTimeHelperFake = new Mock<DateTimeHelper>();
-            IGameLogic gameLogic = new GameLogic(wordRepositoryMock.Object, DateTimeHelperFake.Object);
+            var tournamentRepoFake = new Mock<TournamentRepositoryFake>();
+            IGameLogic gameLogic = new GameLogic(wordRepositoryMock.Object, DateTimeHelperFake.Object, tournamentRepoFake.Object);
 
             // Act 
             Game game = gameLogic.BuildGame(new System.Guid(), 2);
@@ -65,7 +68,8 @@ namespace SB014.UnitTests.Api
             var wordRepositoryFake = new Mock<IWordRepository>();
             wordRepositoryFake.Setup(p=>p.GetWords(It.IsAny<int>())).Returns(new List<string>{testWord});
             var DateTimeHelperFake = new Mock<DateTimeHelper>();
-            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object);
+            var tournamentRepoFake = new Mock<TournamentRepositoryFake>();
+            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object, tournamentRepoFake.Object);
 
             // Act 
             // Build a game with a single anagram
@@ -85,7 +89,8 @@ namespace SB014.UnitTests.Api
             var DateTimeHelperFake = new Mock<DateTimeHelper>();
             DateTime currentDateTime = new System.DateTime(2100,1,1);
             DateTimeHelperFake.SetupGet<DateTime>(x=>x.CurrentDateTime).Returns(currentDateTime);
-            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object);
+            var tournamentRepoFake = new Mock<TournamentRepositoryFake>();
+            IGameLogic gameLogic = new GameLogic(wordRepositoryFake.Object, DateTimeHelperFake.Object, tournamentRepoFake.Object);
 
             // Act 
             Game game = gameLogic.BuildGame(new System.Guid(), 2);
