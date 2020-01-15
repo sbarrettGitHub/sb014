@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Serialization;
 using SB014.API.BAL;
 using SB014.API.DAL;
 using SB014.API.Helpers;
@@ -31,7 +33,8 @@ namespace SB014.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddControllers(setupAction =>setupAction.RespectBrowserAcceptHeader = true)
+                    .AddNewtonsoftJson();
             services.AddSingleton<ITournamentRepository, TournamentRepositoryFake>();
             services.AddSingleton<IDateTimeHelper, DateTimeHelper>();
             services.AddScoped<IWordRepository, WordRepositoryFake>();
@@ -42,20 +45,23 @@ namespace SB014.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseHsts();
-            }
 
             app.UseHttpsRedirection();
-            app.UseSignalR(routes => routes.MapHub<TournamentHub>("/tournamenthub"));
-            app.UseMvc();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
             
         }
     }
