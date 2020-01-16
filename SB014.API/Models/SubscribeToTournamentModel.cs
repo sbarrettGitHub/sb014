@@ -8,5 +8,7 @@ namespace SB014.API.Models
         
         [Required]
         public string Name { get; set; }
+        [Required]
+        public string CountryCode {get; set;}
     }
 }
