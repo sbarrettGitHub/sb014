@@ -100,6 +100,7 @@ namespace SB014.API.BAL
                 if(subscriber != null)
                 {
                     gameRanking.Name = subscriber.Name;                    
+                    gameRanking.CountryCode = subscriber.CountryCode;                    
                 }
                 
                 gameRankings.Add(gameRanking);
