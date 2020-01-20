@@ -9,8 +9,14 @@ using SB014.API.Domain;
 using Microsoft.AspNetCore.JsonPatch;
 using SB014.API.Domain.Enums;
 using System.Linq;
+using Microsoft.AspNetCore.SignalR;
+using SB014.API.Notifications;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
+
 namespace SB014.API.Controllers
 {
+    [EnableCors()]
     [Route("api/tournament")]
     [ApiController]
     public class TournamentController : ControllerBase
@@ -20,12 +26,15 @@ namespace SB014.API.Controllers
         private readonly IMapper Mapper;
         private readonly IGameLogic GameLogic;
         private readonly ITournamentLogic TournamentLogic;
-        public TournamentController(ITournamentRepository tournamentRepository, IMapper mapper, IGameLogic gameLogic, ITournamentLogic tournamentLogic)
+
+        private readonly ITournamentBroadcast TournamentBroadcast;
+        public TournamentController(ITournamentRepository tournamentRepository, IMapper mapper, IGameLogic gameLogic, ITournamentLogic tournamentLogic, ITournamentBroadcast tournamentBroadcast)
         {
             this.TournamentRepository = tournamentRepository;
             this.Mapper = mapper;
             this.GameLogic = gameLogic;
             this.TournamentLogic = tournamentLogic;
+            this.TournamentBroadcast = tournamentBroadcast;
         }
         [HttpGet]
         public IActionResult GetTournaments()
@@ -164,7 +173,7 @@ namespace SB014.API.Controllers
         
         [HttpPost]
         [Route("{id}/bell")]
-        public IActionResult AddTournamentStateBell(Guid id)
+        public async Task<IActionResult> AddTournamentStateBell(Guid id)
         {
             Tournament tournament = this.TournamentRepository.Get(id);
             if(tournament == null)
@@ -182,6 +191,12 @@ namespace SB014.API.Controllers
             // Update the tournament state
             this.TournamentRepository.Update(tournament);
 
+            // Broadcast to all subscribers that the state has changed
+            if(initialState != tournamentStateChange.State)
+            {            
+                await this.TournamentBroadcast.TournamentStateChangeAsync(id, tournament.State, tournament.PreplayGameId, tournament.InplayGameId, tournament.PostplayGameId);
+            }
+           
             // Return the updated tournament
             return Ok(Mapper.Map<Tournament,TournamentModel>(this.TournamentRepository.Get(id)));
         }
@@ -376,6 +391,6 @@ namespace SB014.API.Controllers
             }
         }
 
-
+        
     }
 }

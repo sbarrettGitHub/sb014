@@ -7,6 +7,8 @@ using Moq;
 using SB014.API.DAL;
 using SB014.API.BAL;
 using SB014.API.Domain;
+using Microsoft.AspNetCore.SignalR;
+using SB014.API.Notifications;
 
 namespace SB014.UnitTests.Api
 {
@@ -22,7 +24,8 @@ namespace SB014.UnitTests.Api
             tournamentRepositoryFake.Setup(p=>p.GetAll()).Returns(new List<Tournament>());
             var gameLogicFake = new Mock<IGameLogic>();
             var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
 
             // Act 
             var actionResult = tournamentController.GetTournaments();
@@ -41,7 +44,8 @@ namespace SB014.UnitTests.Api
             tournamentRepositoryFake.Setup(p=>p.GetAll()).Returns(new List<Tournament>());
             var gameLogicFake = new Mock<IGameLogic>();
             var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
 
             //Act
             var  actionResult = tournamentController.GetTournaments();
@@ -61,7 +65,8 @@ namespace SB014.UnitTests.Api
             tournamentRepositoryFake.Setup(p=>p.GetAll()).Returns(new List<Tournament>{new Tournament()});
             var gameLogicFake = new Mock<IGameLogic>();
             var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
 
             //Act
             var  actionResult = tournamentController.GetTournaments();

@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 
-namespace SB014.API.Hubs
+namespace SB014.API.Notifications
 {
     public class TournamentHub: Hub
     {       

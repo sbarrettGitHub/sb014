@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Moq;
 using SB014.API.BAL;
 using SB014.API.Controllers;
 using SB014.API.DAL;
 using SB014.API.Domain;
+using SB014.API.Notifications;
 using SB014.API.Models;
 using Xunit;
 
@@ -25,8 +27,9 @@ namespace SB014.UnitTests.Api
             tournamentRepositoryFake.Setup(p=>p.GetGame(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Game());
             tournamentRepositoryFake.Setup(p=>p.GetSubscriber(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Subscriber());            
             var gameLogicFake = new Mock<IGameLogic>();
-            var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamnetLogicFake = new Mock<ITournamentLogic>(); 
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
             AnswerAttemptUpdateModel answerAttempt = new AnswerAttemptUpdateModel{ Answer = "myanswer"};
 
             // Act 
@@ -45,8 +48,9 @@ namespace SB014.UnitTests.Api
             tournamentRepositoryFake.Setup(p=>p.GetGame(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns<Game>(null);
             tournamentRepositoryFake.Setup(p=>p.GetSubscriber(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Subscriber());
             var gameLogicFake = new Mock<IGameLogic>();
-            var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamnetLogicFake = new Mock<ITournamentLogic>(); 
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
             AnswerAttemptUpdateModel answerAttempt = new AnswerAttemptUpdateModel{ Answer = "myanswer"};
 
             // Act 
@@ -66,8 +70,9 @@ namespace SB014.UnitTests.Api
             tournamentRepositoryFake.Setup(p=>p.GetGame(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Game{Id=gameId});
             tournamentRepositoryFake.Setup(p=>p.GetSubscriber(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns<Subscriber>(null);
             var gameLogicFake = new Mock<IGameLogic>();
-            var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamnetLogicFake = new Mock<ITournamentLogic>(); 
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
             AnswerAttemptUpdateModel answerAttempt = new AnswerAttemptUpdateModel{ Answer = "myanswer"};
 
             // Act 
@@ -87,8 +92,9 @@ namespace SB014.UnitTests.Api
             tournamentRepositoryFake.Setup(p=>p.GetGame(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Game{Id=gameId, Clues = new List<Clue>()});
             tournamentRepositoryFake.Setup(p=>p.GetSubscriber(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Subscriber());
             var gameLogicFake = new Mock<IGameLogic>();
-            var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamnetLogicFake = new Mock<ITournamentLogic>(); 
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
             AnswerAttemptUpdateModel answerAttempt = new AnswerAttemptUpdateModel{ Answer = "myanswer"};
 
             // Act 
@@ -119,8 +125,9 @@ namespace SB014.UnitTests.Api
             });
             tournamentRepositoryFake.Setup(p=>p.GetSubscriber(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Subscriber());
             var gameLogicMock = new Mock<IGameLogic>();
-            var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicMock.Object, tournamnetLogicFake.Object);
+            var tournamnetLogicFake = new Mock<ITournamentLogic>(); 
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicMock.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
             AnswerAttemptUpdateModel answerAttempt = new AnswerAttemptUpdateModel{ Answer = "myanswer"};
 
             // Act 
@@ -154,8 +161,9 @@ namespace SB014.UnitTests.Api
             var gameLogicFake = new Mock<IGameLogic>();
             int score;
             gameLogicFake.Setup(x=>x.EvaluateSubscriberAnswer(It.IsAny<string>(), It.IsAny<Clue>(), out score)).Returns(true);
-            var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamnetLogicFake = new Mock<ITournamentLogic>(); 
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
             AnswerAttemptUpdateModel answerAttempt = new AnswerAttemptUpdateModel{ Answer = "myanswer"};
 
             // Act 
@@ -188,8 +196,9 @@ namespace SB014.UnitTests.Api
             var gameLogicFake = new Mock<IGameLogic>();
             int score;
             gameLogicFake.Setup(x=>x.EvaluateSubscriberAnswer(It.IsAny<string>(), It.IsAny<Clue>(), out score)).Returns(false);
-            var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamnetLogicFake = new Mock<ITournamentLogic>(); 
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
             AnswerAttemptUpdateModel answerAttempt = new AnswerAttemptUpdateModel{ Answer = "myanswer"};
             // Act 
             var actionResult = tournamentController.AddTournamentSubscriberGameAnswerAttempt(new Guid(), new Guid(), new Guid(), clueId, answerAttempt);
@@ -221,8 +230,9 @@ namespace SB014.UnitTests.Api
             var gameLogicFake = new Mock<IGameLogic>();
             int score=0;
             gameLogicFake.Setup(x=>x.EvaluateSubscriberAnswer(It.IsAny<string>(), It.IsAny<Clue>(), out score)).Returns(true);
-            var tournamentLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogicFake.Object, tournamentLogicFake.Object);
+            var tournamentLogicFake = new Mock<ITournamentLogic>(); 
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogicFake.Object, tournamentLogicFake.Object, tournamentBroadcastFake.Object);
             AnswerAttemptUpdateModel answerAttempt = new AnswerAttemptUpdateModel{ Answer = "myanswer"};
 
             // Act 
@@ -263,8 +273,9 @@ namespace SB014.UnitTests.Api
             .Callback(new EvaluateSubscriberAnswerFake((string ansAttempt, Clue clue, out int s) => {s = fakeScore; }))
             .Returns(true);
 
-            var tournamentLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogicFake.Object, tournamentLogicFake.Object);
+            var tournamentLogicFake = new Mock<ITournamentLogic>(); 
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogicFake.Object, tournamentLogicFake.Object, tournamentBroadcastFake.Object);
             AnswerAttemptUpdateModel answerAttempt = new AnswerAttemptUpdateModel{ Answer = "myanswer"};
 
             // Act 
@@ -304,8 +315,9 @@ namespace SB014.UnitTests.Api
             var gameLogicFake = new Mock<IGameLogic>();
             int score;
             gameLogicFake.Setup(x=>x.EvaluateSubscriberAnswer(It.IsAny<string>(), It.IsAny<Clue>(), out score)).Returns(true);
-            var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamnetLogicFake = new Mock<ITournamentLogic>(); 
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
             AnswerAttemptUpdateModel answerAttempt = new AnswerAttemptUpdateModel{ Answer = "myanswer"};
             // Act 
             var actionResult = tournamentController.AddTournamentSubscriberGameAnswerAttempt(new Guid(), new Guid(), GameId, clueId, answerAttempt);

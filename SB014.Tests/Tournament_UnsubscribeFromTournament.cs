@@ -6,6 +6,8 @@ using SB014.API.DAL;
 using System;
 using SB014.API.BAL;
 using SB014.API.Domain;
+using Microsoft.AspNetCore.SignalR;
+using SB014.API.Notifications;
 
 namespace SB014.UnitTests.Api
 {
@@ -21,7 +23,8 @@ namespace SB014.UnitTests.Api
             tournamentRepositoryMock.Setup(p=>p.GetSubscriber(It.IsAny<Guid>(),It.IsAny<Guid>())).Returns(new Subscriber {Id = new Guid()});
             var gameLogicFake = new Mock<IGameLogic>();
             var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
 
             // Act
             tournamentController.UnsubscribeFromTournament(new Guid(),new Guid());
@@ -38,7 +41,8 @@ namespace SB014.UnitTests.Api
             tournamentRepositoryFake.Setup(p=>p.Get(It.IsAny<Guid>())).Returns<Tournament>(null);
             var gameLogicFake = new Mock<IGameLogic>();
             var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
 
             // Act 
             var  actionResult = tournamentController.UnsubscribeFromTournament(new Guid(),new Guid());
@@ -56,7 +60,8 @@ namespace SB014.UnitTests.Api
             tournamentRepositoryFake.Setup(p=>p.GetSubscriber(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns<Subscriber>(null);
             var gameLogicFake = new Mock<IGameLogic>();
             var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
 
             // Act 
             var  actionResult = tournamentController.UnsubscribeFromTournament(new Guid(),new Guid());
@@ -74,7 +79,8 @@ namespace SB014.UnitTests.Api
             tournamentRepositoryFake.Setup(p=>p.GetSubscriber(It.IsAny<Guid>(),It.IsAny<Guid>())).Returns(new Subscriber {Id = new Guid()});
             var gameLogicFake = new Mock<IGameLogic>();
             var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
 
             // Act 
             var  actionResult = tournamentController.UnsubscribeFromTournament(new Guid(),new Guid());
