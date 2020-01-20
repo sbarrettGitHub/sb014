@@ -9,6 +9,9 @@ using SB014.API.Domain;
 using Microsoft.AspNetCore.JsonPatch;
 using SB014.API.Domain.Enums;
 using SB014.API.Models;
+using Microsoft.AspNetCore.SignalR;
+using SB014.API.Notifications;
+
 namespace SB014.UnitTests.Api
 {
     public class Tournament_UpdateTournamentStateShould
@@ -22,7 +25,8 @@ namespace SB014.UnitTests.Api
             tournamentRepositoryFake.Setup(p=>p.Get(It.IsAny<Guid>())).Returns<Tournament>(null);
             var gameLogicFake = new Mock<IGameLogic>();
             var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
 
             // Act 
             var actionResult = tournamentController.Update(Guid.NewGuid(), new JsonPatchDocument<TournamentStateUpdateModel>().Replace(t=>t.State,TournamentState.PrePlay));
@@ -45,7 +49,8 @@ namespace SB014.UnitTests.Api
                                                                                             CluesPerGame = 1});
             var gameLogicFake = new Mock<IGameLogic>();
             var tournamnetLogicMock = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicMock.Object);
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicMock.Object, tournamentBroadcastFake.Object);
             
             // Act
             var actionResult = tournamentController.Update(new Guid(), new JsonPatchDocument<TournamentStateUpdateModel>().Replace(t=>t.State,TournamentState.PrePlay));
@@ -66,7 +71,8 @@ namespace SB014.UnitTests.Api
                                                                                             CluesPerGame = 1});
             var gameLogicFake = new Mock<IGameLogic>();
             var tournamnetLogicMock = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicMock.Object);
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicMock.Object, tournamentBroadcastFake.Object);
             
             // Act
             var actionResult = tournamentController.Update(new Guid(), new JsonPatchDocument<TournamentStateUpdateModel>().Replace(t=>t.State,TournamentState.InPlay));
@@ -89,7 +95,8 @@ namespace SB014.UnitTests.Api
                                                                                             CluesPerGame = 1});
             var gameLogicFake = new Mock<IGameLogic>();
             var tournamnetLogicMock = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicMock.Object);
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryFake.Object, mapper, gameLogicFake.Object, tournamnetLogicMock.Object, tournamentBroadcastFake.Object);
             
             // Act
             var actionResult = tournamentController.Update(new Guid(), new JsonPatchDocument<TournamentStateUpdateModel>().Replace(t=>t.State,TournamentState.InPlay));
@@ -112,7 +119,8 @@ namespace SB014.UnitTests.Api
             tournamentRepositoryMock.Setup(p=>p.Get(It.IsAny<Guid>())).Returns(tournament);
             var gameLogicFake = new Mock<IGameLogic>();
             var tournamnetLogicFake = new Mock<ITournamentLogic>();
-            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
             TournamentState currentState = tournament.State;
 
             // Act
@@ -139,7 +147,8 @@ namespace SB014.UnitTests.Api
                                                                                             InplayGameId = null,
                                                                                             PostplayGameId = null,
                                                                                             CluesPerGame = 1}); 
-            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
 
             // Act
             var actionResult = tournamentController.Update(new Guid(), new JsonPatchDocument<TournamentStateUpdateModel>().Replace(t=>t.State,TournamentState.PrePlay));
@@ -165,7 +174,8 @@ namespace SB014.UnitTests.Api
                                                                                             InplayGameId = Guid.NewGuid(),
                                                                                             PostplayGameId = null,
                                                                                             CluesPerGame = 1}); 
-            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object);
+            var tournamentBroadcastFake = new Mock<ITournamentBroadcast>();
+            var tournamentController = new TournamentController(tournamentRepositoryMock.Object, mapper, gameLogicFake.Object, tournamnetLogicFake.Object, tournamentBroadcastFake.Object);
 
             // Act
             var actionResult = tournamentController.Update(new Guid(), new JsonPatchDocument<TournamentStateUpdateModel>().Replace(t=>t.State,TournamentState.InPlay));

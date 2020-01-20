@@ -16,7 +16,7 @@ using Newtonsoft.Json.Serialization;
 using SB014.API.BAL;
 using SB014.API.DAL;
 using SB014.API.Helpers;
-using SB014.API.Hubs;
+using SB014.API.Notifications;
 using SB014.API.Models;
 
 namespace SB014.API
@@ -35,11 +35,13 @@ namespace SB014.API
         {
             services.AddControllers(setupAction =>setupAction.RespectBrowserAcceptHeader = true)
                     .AddNewtonsoftJson();
+            services.AddCors();
             services.AddSingleton<ITournamentRepository, TournamentRepositoryFake>();
             services.AddSingleton<IDateTimeHelper, DateTimeHelper>();
             services.AddScoped<IWordRepository, WordRepositoryFake>();
             services.AddScoped<ITournamentLogic, TournamentLogic>();
             services.AddScoped<IGameLogic, GameLogic>();            
+            services.AddScoped<ITournamentBroadcast, TournamentBroadcast>();            
             services.AddAutoMapper(typeof(AutomapperProfile));
             services.AddSignalR(); 
         }
@@ -57,10 +59,13 @@ namespace SB014.API
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseCors(
+                options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()
+            ); //This needs to set everything allowed
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<TournamentHub>("/tournamentHub");
             });
             
         }
